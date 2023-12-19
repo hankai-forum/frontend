@@ -1,3 +1,4 @@
+<!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
   import Card from "./Card.vue"
   import { ref, onMounted } from "vue"
@@ -70,30 +71,4 @@
 
 
 <style>
-#page-title {
-  display: flex;
-  flex-direction: row;
-  padding: 20px 0 0 0;
-  margin-bottom: 2rem;
-  align-items: center;
-  justify-content: space-around;
-}
-
-#add-post-button{
-  font-size: large;
-  background-color: rgba(0, 0, 0, 0);
-  color: white;
-  padding: 10px;
-  border: 2px white solid;
-  border-radius: 10px;
-}
-
-.title-text{
-  font-size: x-large;
-  text-decoration: white;
-}
-
-*, *:before, *:after {
-  box-sizing: border-box;
-}
 </style>

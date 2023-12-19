@@ -1,3 +1,4 @@
+<!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
   import { onMounted, ref } from "vue"
   import { useRoute, useRouter } from "vue-router";
@@ -57,7 +58,7 @@
           userId: userId.value
         }),
       });
-    router.go()
+    getPost();
   }
 
   async function deletePost() {
@@ -156,34 +157,6 @@
 
 
 <style scoped>
-.add-comment {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  margin-bottom: 25px;
-  gap: 10px;
-}
-
-.submit-button {
-  font-size: large;
-  background-color: rgba(0, 0, 0, 0);
-  color: white;
-  padding: 10px;
-  border: 2px white solid;
-  border-radius: 10px;
-  height: 3.4rem;
-  margin-top: 0;
-}
-
-.delete-button {
-  font-size: x-small;
-  background-color: rgba(0, 0, 0, 0);
-  color: white;
-  border: 1px white solid;
-  border-radius: 4px;
-  margin-top: 25px;
-}
-
 .input-area {
   font-size: large;
   width: 100%;

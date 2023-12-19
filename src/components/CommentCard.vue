@@ -1,3 +1,4 @@
+<!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
   import { useRouter } from "vue-router"
   import { onMounted, ref } from "vue"

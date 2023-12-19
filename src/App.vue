@@ -1,13 +1,19 @@
+<!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
-  import { useRouter, useRoute } from "vue-router"
+import { useRouter, useRoute } from "vue-router"
+import Navbar from "./components/Navbar.vue"
 
-  const router = useRouter()
-  const route = useRoute()
+const router = useRouter()
+const route = useRoute()
 </script>
 
 
 <template>
   <div id="wrapper">
+    <div class="navbar">
+      <Navbar />
+      <p> hi from navbar </p>
+    </div>
     <div class="main-body">
       <router-view></router-view>
     </div>
@@ -24,21 +30,20 @@
   text-align: center;
 }
 
-.side-button {
-  font-size: small;
+button {
+  font-size: large;
   background-color: rgba(0, 0, 0, 0);
   color: white;
-  border: 1px white solid;
-  border-radius: 4px;
-  padding: 10px 15px 10px 15px;
-  margin-top: 25px;
+  padding: 10px;
+  border: 2px white solid;
+  border-radius: 10px;
 }
 
-.side-button:hover{
+button:hover {
   cursor: pointer;
 }
 
-.title-text{
+.title-text {
   font-size: x-large;
   text-decoration: white;
 }
@@ -59,5 +64,9 @@
   display: grid;
   grid-template-columns: 300px auto 300px;
   height: 100vh;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
 }
 </style>
