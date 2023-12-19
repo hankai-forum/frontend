@@ -31,8 +31,14 @@
 a,
 a:active,
 a:visited {
-  color: white;
   text-decoration: none;
+}
+a {
+  color: white;
+}
+a:active,
+a:visited {
+  color: lightgrey;
 }
 
 .card-wrapper {

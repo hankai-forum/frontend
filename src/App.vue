@@ -1,29 +1,26 @@
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
-import { useRouter, useRoute } from "vue-router"
 import Navbar from "./components/Navbar.vue"
 
-const router = useRouter()
-const route = useRoute()
 </script>
-
 
 <template>
   <div id="wrapper">
-    <div class="navbar">
-      <Navbar />
-      <p> hi from navbar </p>
-    </div>
+    <Navbar />
     <div class="main-body">
       <router-view></router-view>
     </div>
   </div>
 </template>
 
-
 <style>
+body {
+  padding: 0;
+  margin: 0;
+}
 #wrapper {
-  font-family: Trispace, sans-serif;
+  font-family: Trispace, monospace;
+  color: white;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -41,11 +38,6 @@ button {
 
 button:hover {
   cursor: pointer;
-}
-
-.title-text {
-  font-size: x-large;
-  text-decoration: white;
 }
 
 .left-column {

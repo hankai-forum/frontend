@@ -2,6 +2,7 @@
 <script setup>
   import { ref, onMounted } from "vue"
   import { useRouter } from "vue-router"
+  import TextInput from "./TextInput.vue"
 
   const title = ref("")
   const description = ref("")
@@ -49,13 +50,13 @@
       <p>
         Post title:
       </p>
-      <textarea class="input-area" rows="1" v-model="title" placeholder="What topic do you want to post about?" />
+      <TextInput v-model="title" rows="1" placeholder="What topic do you want to post about?" />
     </div>
     <div class="new-obj">
       <p>
         Post description:
       </p>
-      <textarea class="input-area" rows="1" v-model="description" placeholder="Elaborate on your topic!" />
+      <TextInput v-model="description" rows="8" placeholder="Care to elaborate more?" />
     </div>
     <button class="side-button" @click="submit">Submit!</button>
   </div>
@@ -81,15 +82,5 @@ p {
   resize: vertical;
   min-height: 1.6em;
   flex-grow: 2;
-}
-
-#post-submit-button {
-  font-size: large;
-  background-color: rgba(0, 0, 0, 0);
-  color: white;
-  padding: 10px;
-  border: 2px white solid;
-  border-radius: 10px;
-  margin-top: 15px;
 }
 </style>

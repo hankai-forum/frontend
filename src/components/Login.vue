@@ -3,6 +3,8 @@
   import { ref, watch } from "vue"
   import { useRouter } from "vue-router"
 
+  import TextInput from "./TextInput.vue"
+
   const router = useRouter()
 
   const username = ref("")
@@ -53,53 +55,12 @@
       <button @click="signUpClick" class="side-button" style="margin-top: 0">No account? <span style="color: yellow; text-decoration: underline">Sign Up</span> here! 🖐️</button>
     </div>
     <div class="input-block">
-      <h1>
-        Username:
-      </h1>
-      <input class="input-area" v-model="username" placeholder="Your username 🧑🏻‍🦱" />
+      <TextInput v-model="username" label="Username:" placeholder="Your username 🧑🏻‍🦱" />
     </div>
-    <div class="input-block">
-      <h1>
-        Password:
-      </h1>
-      <input class="input-area" v-model="password" placeholder="Your password 🔑" type="password" />
+    <div>
+      <TextInput v-model="password" label="Password:" placeholder="Your password 🔑" type="password" />
     </div>
     <p v-if="wrong" style="color: red; margin-top: -5px">Username or password incorrect</p>
     <button @click="loginSubmit" class="side-button" style="margin-top: 0">Submit!</button>
   </div>
 </template>
-
-
-<style scoped>
-.input-block{
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.input-area {
-  font-size: large;
-  min-height: 1.4em;
-  margin-left: 9px;
-  background-color: rgba(0, 0, 0, 0);
-  color: white;
-  border: 1px white solid;
-  border-radius: 10px;
-  padding: 6px 8px 6px 8px;
-}
-
-.input-area:focus{
-  outline: none;
-  border-color: yellow;
-  caret-color: lightyellow;
-}
-
-.middle-column {
-  grid-column: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-</style>

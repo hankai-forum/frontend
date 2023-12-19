@@ -122,7 +122,6 @@
 }
 
 .middle-column {
-  grid-column: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
