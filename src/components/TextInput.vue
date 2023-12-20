@@ -9,7 +9,7 @@ const rows = ref(props.rows || 1);
 
 <template>
   <span :style="{'width': `${maxWidth}`}">
-    <input v-if="type" class="input area" :placeholder="placeholder" :value="modelValue"
+    <input v-if="type" class="input area" :placeholder="placeholder" :value="modelValue" :type="type"
       @input="$emit('update:modelValue', $event.target.value)" :style="{'min-height': `${minHeight}rem`, 'font-size': fontSize, 'resize': resize}" />
     <textarea v-else class="input area" :rows="rows" :placeholder="placeholder" :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)" :style="{'min-height': `${minHeight}rem`, 'font-size': fontSize, 'resize': resize}" />
