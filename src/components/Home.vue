@@ -25,10 +25,10 @@
     const token = localStorage.getItem('token')
     if (!!token){
       loggedIn.value = true
-      console.log("Logged In")
+      // console.log("Logged In")
       username.value = localStorage.getItem("username")
     }else{
-      console.log("Not logged In")
+      // console.log("Not logged In")
     }
   }
 
@@ -51,24 +51,20 @@
 <template>
   <div class="middle-column">
     <div id="page-title">
-      <p class="title-text">
-        Forum
-      </p>
       <router-link v-if="loggedIn" to="/addpost">
-        <button class="side-button" style="margin-top: 0">Add Post</button>
+        <button class="side-button" style="margin: 0 0 1rem 0">Add Post</button>
       </router-link>
     </div>
     <Card v-for="item in cards" :question="item.q" :description="item.d" :postUrl="item.to" />
   </div>
-  <div v-if="!loggedIn" class="right-column" style="margin-top: 15px">
-    <button @click="loginClick" class="side-button">Login</button>
-  </div>
-  <div v-else class="right-column" style="margin-top: 15px">
-    <h3>Logged in as {{ username }}</h3>
-    <button @click="logoutClick" class="side-button">Logout</button>
-  </div>
+<!--  <div v-if="!loggedIn" class="right-column" style="margin-top: 15px">-->
+<!--    <button @click="loginClick" class="side-button">Login</button>-->
+<!--  </div>-->
+<!--  <div v-else class="right-column" style="margin-top: 15px">-->
+<!--    <h3>Logged in as {{ username }}</h3>-->
+<!--    <button @click="logoutClick" class="side-button">Logout</button>-->
+<!--  </div>-->
 </template>
 
 
-<style>
-</style>
+<style />

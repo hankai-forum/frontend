@@ -40,7 +40,8 @@
       const token = data.token
       localStorage.setItem("token", token)
       localStorage.setItem("username", username.value)
-      await router.push("/")
+      window.location.replace("/")
+      // TODO: instead of
     }
   }
 </script>

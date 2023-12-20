@@ -1,46 +1,101 @@
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
-import { ref } from 'vue';
-const links = ref([
-  { url: '/', text: 'Home' },
-  { url: '/', text: 'Home' },
-  { url: '/', text: 'Home' },
-  //{url: '/posts', text: 'Posts'},
-]);
+  import { ref, onMounted } from 'vue';
+  import { useRouter, useRoute } from "vue-router"
+
+  const router = useRouter()
+  const route = useRoute()
+
+  const links = ref([
+    { url: '/', text: 'Home' },
+    { url: '/', text: 'Home' },
+    { url: '/', text: 'Home' },
+  ]);
+
+  const loggedIn = ref(false)
+  const username = ref("")
+
+  function isLoggedIn(){
+    const token = localStorage.getItem('token')
+    if (!!token){
+      loggedIn.value = true
+      // console.log("Logged In")
+      username.value = localStorage.getItem("username")
+    }else{
+      // console.log("Not logged In")
+    }
+  }
+
+  function logoutClick(){
+    localStorage.removeItem("token")
+    router.go()
+  }
+
+  function loginClick(){
+    router.push("/login")
+  }
+
+  onMounted(() => {
+    isLoggedIn()
+  })
 </script>
 
 <template>
+<!-- TODO: chessburger menu -->
   <div class="navbar main-body">
-    <ul class="links">
-      <li class="link left-column" v-for="link in links">
-        <router-link :to="link.url">
+    <div class="links">
+        <router-link :to="link.url" class="link left-column" v-for="link in links">
           <button>{{ link.text }}</button>
         </router-link>
-      </li>
-    </ul>
-    <input class="middle-column"/>
-    <button class="right-column"/>
+    </div >
+
+    <input class="middle-column" />
+
+    <div class="right-column" style="justify-self: flex-end" >
+      <div v-if="loggedIn" class="log-block">
+        <p style="margin-right: 2rem;">Logged in as {{ username }}</p>
+        <button @click="logoutClick">Logout</button>
+      </div>
+
+      <div v-else class="log-block">
+        <p style="margin-right: 2rem;">Not logged in</p>
+        <button @click="loginClick">Login</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.log-block{
+  display: flex;
+
+}
+
+.main-body {
+  display: grid;
+  grid-template-columns: 30% auto 30%;
+}
+
 .navbar {
-  background-color: rgba(48, 48, 48, 0.8);
+  background-color: rgba(48, 48, 48, 1);
   width: 100%;
   height: 100%;
   align-items: center;
   position: sticky;
   top: 0;
+  border-bottom: 1px white solid;
+  margin-bottom: 0.6rem;
+  padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+  //display: flex;
 }
+
 ul.links {
   padding: 0;
   margin: 0;
 }
+
 .links {
   display: flex;
-}
-li.link {
-  list-style-type: none;
-  margin: 0.2rem 0.4rem;
+  gap: 1rem;
 }
 </style>

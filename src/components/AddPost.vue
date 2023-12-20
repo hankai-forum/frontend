@@ -58,7 +58,7 @@
       </p>
       <TextInput v-model="description" rows="8" placeholder="Care to elaborate more?" />
     </div>
-    <button class="side-button" @click="submit">Submit!</button>
+    <button @click="submit">Submit!</button>
   </div>
 </template>
 
