@@ -80,7 +80,7 @@
       <label>
         Username:
       </label>
-      <TextInput v-model="username" maxlength="16" placeholder="Your username 🧑🏻‍🦱" type="username" rows="1" resize="none" overflow="hidden" />
+      <TextInput v-model="username" maxlength="25" placeholder="Your username 🤡" type="username" rows="1" resize="none" overflow="hidden" />
     </div>
     <div class="input-block">
       <label>
@@ -88,7 +88,6 @@
       </label>
       <TextInput v-model="password" maxlength="16" placeholder="Your password 🔑" type="password" rows="1" resize="none" overflow="hidden" />
     </div>
-<!--    <button v-if="!userExists" @click="signupSubmit" class="side-button" style="margin-top: 0">Submit!</button>-->
     <p v-if="tooShort" class="user-exists-text">Username has to be greater than 3 characters!</p>
     <p v-else-if="userExists" class="user-exists-text">Username already exists, pick another one!</p>
     <button v-else @click="signupSubmit" class="side-button" style="margin-top: 0">Submit!</button>
