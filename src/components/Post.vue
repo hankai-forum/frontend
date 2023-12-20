@@ -133,7 +133,7 @@ const route = useRoute()
 
 <template>
   <div class="left-column" style="display: flex; flex-direction: column; width: 100%; align-items: center;">
-    <p>Posted by {{ OPUsername }}</p>
+    <p>Posted by <span style="text-decoration: underline">{{ OPUsername }}</span></p>
     <button v-if="isOP" class="side-button" @click="deletePost">Delete Post</button>
   </div>
   <div class="middle-column ">
