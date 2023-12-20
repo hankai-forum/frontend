@@ -2,6 +2,7 @@
 <script setup>
   import { ref, onMounted } from 'vue';
   import { useRouter, useRoute } from "vue-router"
+  import TextInput from "@/components/TextInput.vue";
 
   const router = useRouter()
   const route = useRoute()
@@ -49,7 +50,7 @@
         </router-link>
     </div >
 
-    <input class="middle-column" />
+    <TextInput class="middle-column" minHeight="1" rows="1" font-size="small" resize="none" />
 
     <div class="right-column" style="justify-self: flex-end" >
       <div v-if="loggedIn" class="log-block">
@@ -84,9 +85,8 @@
   position: sticky;
   top: 0;
   border-bottom: 1px white solid;
-  margin-bottom: 0.6rem;
+  //margin-bottom: 0.6rem;
   padding: 0.5rem 0.8rem 0.5rem 0.8rem;
-  //display: flex;
 }
 
 ul.links {

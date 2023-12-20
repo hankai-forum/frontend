@@ -20,28 +20,33 @@
   })
 
   async function loginSubmit(){
-    const response = await fetch("http://localhost:3000/api/auth/user/signin", {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username.value,
-        password: password.value
-      }),
-    });
-    const data = await response.json()
-    if (data === false){
+    if (username.value.length !== 0 && password.value.length !== 0){
+      const response = await fetch("http://localhost:3000/api/auth/user/signin", {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username.value,
+          password: password.value
+        }),
+      });
+      const data = await response.json()
+      if (data === false){
+        console.log("Username or password incorrect")
+        wrong.value = true
+      }else{
+        wrong.value = false
+        const token = data.token
+        localStorage.setItem("token", token)
+        localStorage.setItem("username", username.value)
+        window.location.replace("/")
+        // TODO: instead of
+      }
+    }else{
       console.log("Username or password incorrect")
       wrong.value = true
-    }else{
-      wrong.value = false
-      const token = data.token
-      localStorage.setItem("token", token)
-      localStorage.setItem("username", username.value)
-      window.location.replace("/")
-      // TODO: instead of
     }
   }
 </script>
@@ -56,12 +61,41 @@
       <button @click="signUpClick" class="side-button" style="margin-top: 0">No account? <span style="color: yellow; text-decoration: underline">Sign Up</span> here! 🖐️</button>
     </div>
     <div class="input-block">
-      <TextInput v-model="username" label="Username:" placeholder="Your username 🧑🏻‍🦱" />
+      <label>
+        Username:
+      </label>
+      <TextInput v-model="username" placeholder="Your username 🧑🏻‍🦱" rows="1" resize="none" />
     </div>
-    <div>
-      <TextInput v-model="password" label="Password:" placeholder="Your password 🔑" type="password" />
+    <div class="input-block">
+      <label>
+        Password:
+      </label>
+      <TextInput v-model="password" placeholder="Your password 🔑" type="password" rows="1" resize="none" />
     </div>
     <p v-if="wrong" style="color: red; margin-top: -5px">Username or password incorrect</p>
     <button @click="loginSubmit" class="side-button" style="margin-top: 0">Submit!</button>
   </div>
 </template>
+
+<style scoped>
+label {
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+.middle-column {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.input-block{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

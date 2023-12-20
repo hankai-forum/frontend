@@ -50,13 +50,13 @@
       <p>
         Post title:
       </p>
-      <TextInput v-model="title" rows="1" placeholder="What topic do you want to post about?" />
+      <TextInput max-width="100%" v-model="title" rows="1" placeholder="What topic do you want to post about?" />
     </div>
     <div class="new-obj">
       <p>
         Post description:
       </p>
-      <TextInput v-model="description" rows="8" placeholder="Care to elaborate more?" />
+      <TextInput max-width="100%" v-model="description" rows="8" placeholder="Care to elaborate more?" />
     </div>
     <button @click="submit">Submit!</button>
   </div>
@@ -76,11 +76,4 @@ p {
   width: 100%
 }
 
-.input-area {
-  font-size: large;
-  width: 100%;
-  resize: vertical;
-  min-height: 1.6em;
-  flex-grow: 2;
-}
 </style>

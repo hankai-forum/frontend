@@ -52,8 +52,9 @@
   <div class="middle-column">
     <div id="page-title">
       <router-link v-if="loggedIn" to="/addpost">
-        <button class="side-button" style="margin: 0 0 1rem 0">Add Post</button>
+        <button style="margin: 0 0 0.5rem 0">Add Post</button>
       </router-link>
+      <p v-else style="font-size: x-large">Posts</p>
     </div>
     <Card v-for="item in cards" :question="item.q" :description="item.d" :postUrl="item.to" />
   </div>

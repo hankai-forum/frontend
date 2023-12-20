@@ -6,8 +6,8 @@ import Navbar from "./components/Navbar.vue"
 
 <template>
   <div id="wrapper">
-    <Navbar />
-    <div class="main-body">
+    <Navbar style="grid-row: 1" />
+    <div class="main-body" style="grid-row: 2">
       <router-view></router-view>
     </div>
   </div>
@@ -19,6 +19,10 @@ body {
   margin: 0;
 }
 #wrapper {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-gap: 0.5rem;
+  min-height: 100vh;
   font-family: Trispace, monospace;
   color: white;
   text-rendering: optimizeLegibility;
@@ -55,7 +59,7 @@ button:hover {
 .main-body {
   display: grid;
   grid-template-columns: 300px auto 300px;
-  height: 100vh;
+  height: 100%;
 }
 
 *, *:before, *:after {
