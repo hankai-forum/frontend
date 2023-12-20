@@ -55,7 +55,7 @@
 
     <div class="right-column" style="justify-self: flex-end" >
       <div v-if="loggedIn" class="log-block">
-        <p style="margin-right: 2rem;">Logged in as {{ username }}</p>
+        <p style="margin-right: 2rem;">Logged in as <span style="text-decoration: underline">{{ username }}</span></p>
         <button @click="logoutClick">Logout</button>
       </div>
 
