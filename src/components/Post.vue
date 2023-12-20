@@ -108,15 +108,6 @@
     }
   }
 
-  function loginClick(){
-    router.push("/login")
-  }
-
-  function logoutClick(){
-    localStorage.removeItem("token")
-    router.push("/")
-  }
-
   onMounted(() => {
     getPost()
   })
@@ -146,13 +137,6 @@
       <CommentCard v-else v-for="comment in postComments" :comment="comment" :userId="userId" />
     </div>
   </div>
-  <div v-if="!loggedIn" class="right-column">
-    <button @click="loginClick" class="side-button">Login</button>
-  </div>
-  <div v-else class="right-column">
-    <h3>Logged in as {{ username }}</h3>
-    <button @click="logoutClick" class="side-button">Logout</button>
-  </div>
 </template>
 
 
@@ -168,5 +152,13 @@
 .question-description{
   font-size: large;
   font-weight: 400;
+}
+
+.add-comment {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-bottom: 25px;
+  gap: 10px;
 }
 </style>
