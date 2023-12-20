@@ -29,7 +29,7 @@
 
   function logoutClick(){
     localStorage.removeItem("token")
-    router.go()
+    router.push("/")
   }
 
   function loginClick(){

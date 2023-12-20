@@ -2,7 +2,6 @@
 <script setup>
   import { ref, watch } from "vue"
   import { useRouter } from "vue-router"
-
   import TextInput from "./TextInput.vue"
 
   const router = useRouter()
@@ -81,6 +80,7 @@
 label {
   font-size: xx-large;
   font-weight: bold;
+  min-width: 10rem;
 }
 
 .middle-column {

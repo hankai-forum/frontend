@@ -1,16 +1,17 @@
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
-import { ref } from "vue"
+import { ref, watch } from "vue"
 const props = defineProps(['rows', 'placeholder', 'type', 'modelValue', 'minHeight', 'fontSize', 'resize', 'maxWidth'])
 const emits = defineEmits(['update:modelValue'])
 const rows = ref(props.rows || 1);
 
-console.log(props.maxWidth)
 </script>
 
 <template>
   <span :style="{'width': `${maxWidth}`}">
-    <textarea class="input area" :rows="rows" :placeholder="placeholder" :value="modelValue"
+    <input v-if="type" class="input area" :placeholder="placeholder" :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)" :style="{'min-height': `${minHeight}rem`, 'font-size': fontSize, 'resize': resize}" />
+    <textarea v-else class="input area" :rows="rows" :placeholder="placeholder" :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)" :style="{'min-height': `${minHeight}rem`, 'font-size': fontSize, 'resize': resize}" />
   </span>
 </template>
@@ -34,7 +35,6 @@ console.log(props.maxWidth)
 
 .area {
   resize: vertical;
-  flex-grow: 2;
   width: 100%;
 }
 </style>
