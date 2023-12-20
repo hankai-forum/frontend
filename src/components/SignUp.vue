@@ -1,4 +1,3 @@
-<!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
   import { ref, watch } from "vue"
   import { useRouter } from "vue-router"
@@ -9,19 +8,28 @@
   const username = ref("")
   const password = ref("")
   const userExists = ref(false)
+  const tooShort = ref(true)
+  const pp = ""
 
   function loginClick(){
     router.push("/login")
   }
 
   watch(username, async (newUsername, oldUsername) => {
-    const response = await fetch(`http://localhost:3000/api/auth/user/exists/${newUsername}`)
-    const exists = await response.json()
-    if (exists){
-      userExists.value = true
-      console.log("exists")
-    }else{
-      userExists.value = false
+    if (username.value.length < 3){
+      tooShort.value = true
+    }else if (username.value.length >= 3 && username.value.length <= 16){
+      tooShort.value = false
+      const response = await fetch(`http://localhost:3000/api/auth/user/exists/${newUsername}`)
+      const exists = await response.json()
+      if (exists){
+        userExists.value = true
+        console.log("exists")
+      }else{
+        userExists.value = false
+      }
+    }else {
+      username.value = oldUsername
     }
   })
 
@@ -72,16 +80,18 @@
       <label>
         Username:
       </label>
-      <TextInput v-model="username" placeholder="Your username 🧑🏻‍🦱" type="username" rows="1" resize="none" overflow="hidden" />
+      <TextInput v-model="username" maxlength="16" placeholder="Your username 🧑🏻‍🦱" type="username" rows="1" resize="none" overflow="hidden" />
     </div>
     <div class="input-block">
       <label>
         Password:
       </label>
-      <TextInput v-model="password" placeholder="Your password 🔑" type="password" rows="1" resize="none" overflow="hidden" />
+      <TextInput v-model="password" maxlength="16" placeholder="Your password 🔑" type="password" rows="1" resize="none" overflow="hidden" />
     </div>
-    <button v-if="!userExists" @click="signupSubmit" class="side-button" style="margin-top: 0">Submit!</button>
-    <p class="user-exists-text" v-else>Username already exists, pick another one!</p>
+<!--    <button v-if="!userExists" @click="signupSubmit" class="side-button" style="margin-top: 0">Submit!</button>-->
+    <p v-if="tooShort" class="user-exists-text">Username has to be greater than 3 characters!</p>
+    <p v-else-if="userExists" class="user-exists-text">Username already exists, pick another one!</p>
+    <button v-else @click="signupSubmit" class="side-button" style="margin-top: 0">Submit!</button>
   </div>
 </template>
 

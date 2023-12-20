@@ -1,18 +1,18 @@
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
 import { ref, watch } from "vue"
-const props = defineProps(['rows', 'placeholder', 'type', 'modelValue', 'minHeight', 'fontSize', 'resize', 'maxWidth', 'overflow', 'styles'])
+const props = defineProps(['rows', 'placeholder', 'type', 'modelValue', 'maxWidth', 'styles', 'maxlength'])
 const emits = defineEmits(['update:modelValue'])
 const rows = ref(props.rows || 1)
 </script>
 
 <template>
   <span :style="{'width': `${maxWidth}`}">
-    <input v-if="type === 'password' || type === 'username'" class="input area" :placeholder="placeholder" :value="modelValue" :type="type"
-      @input="$emit('update:modelValue', $event.target.value)" :style="styles" />
+    <input v-if="type === 'password' || type === 'username'" class="input area" :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)" :style="styles" v-bind="$props" />
 
-    <textarea v-else class="input area" :rows="rows" :placeholder="placeholder" :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)" :style="styles" />
+    <textarea v-else class="input area" :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)" :style="styles" v-bind="$props" />
   </span>
 </template>
 

@@ -15,7 +15,6 @@
   }
 
   watch(username, async (newUsername, oldUsername) => {
-    username.value = username.value.replace(/\n/g,'')
     wrong.value = false
   })
 
