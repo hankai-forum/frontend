@@ -1,17 +1,18 @@
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
-  import { onMounted, ref } from "vue"
-  import { useRoute, useRouter } from "vue-router";
-  import CommentCard from "./CommentCard.vue";
-  import TextInput from "@/components/TextInput.vue";
+import {onMounted, ref} from "vue"
+import {useRoute, useRouter} from "vue-router";
+import CommentCard from "./CommentCard.vue";
+import TextInput from "@/components/TextInput.vue";
 
-  const route = useRoute()
+const route = useRoute()
   const router = useRouter()
   const postId = route.params.postId
   const title = ref("")
   const description = ref("")
   const postUserId = ref("")
   const postComments = ref([])
+  const commentUsernames = ref([])
   const newComment = ref("")
   const loggedIn = ref(false)
   const isOP = ref(false)
@@ -30,19 +31,19 @@
     await isLoggedIn()
   }
 
+  async function getUsername(userId){
+    const response = await fetch(`http://localhost:3000/api/auth/user/getUser/${userId}`)
+    return (await response.json())[0]
+  }
+
   async function getPostComments(){
     const response = await fetch(`http://localhost:3000/api/posts/comments/${postId}`)
     postComments.value = await response.json()
-  }
-
-  async function deleteComment(commentId){
-    const response = await fetch(`http://localhost:3000/api/posts/comments/del/${commentId}`, {
-      method: "DELETE",
-      mode: 'cors',
-      headers: {
-          'Content-Type': 'application/json',
-      }
-    })
+    commentUsernames.value = []
+    for (const comment of postComments.value){
+      const username = (await getUsername(comment.userId)).username
+      commentUsernames.value.push(username)
+    }
   }
 
   async function submit(){
@@ -58,8 +59,21 @@
           content: newComment.value,
           userId: userId.value
         }),
-      });
-    getPost();
+      })
+    await getPostComments()
+    newComment.value = ""
+  }
+
+  async function deleteComment(commentId){
+    console.log(commentId)
+    const response = await fetch(`http://localhost:3000/api/posts/comments/del/${commentId}`, {
+      method: "DELETE",
+      mode: 'cors',
+      headers: {
+          'Content-Type': 'application/json',
+      }
+    })
+    await getPostComments()
   }
 
   async function deletePost() {
@@ -134,8 +148,8 @@
         <button class="side-button submit-button" @click="submit">Submit!</button>
       </div>
       <p v-if="postComments.length === 0" style="color:#9ccc65">No comments</p>
-      <CommentCard v-else-if="loaded" v-for="comment in postComments" :comment="comment" :userId="userId" />
-      <CommentCard v-else v-for="comment in postComments" :comment="comment" :userId="userId" />
+      <CommentCard v-else-if="loaded" @deleteComment="(commentId) => deleteComment(commentId)" v-for="(comment, i, j) in postComments" :comment="comment" :userId="userId" :username="commentUsernames[i]" />
+      <CommentCard v-else v-for="(comment, i, j) in postComments" :comment="comment" :userId="userId" :username="commentUsernames[i]" />
     </div>
   </div>
 </template>
@@ -150,7 +164,7 @@
 }
 
 .question-description{
-  font-size: large;
+  font-size: medium;
   font-weight: 400;
 }
 
