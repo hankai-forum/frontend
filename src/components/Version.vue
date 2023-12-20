@@ -6,5 +6,5 @@ const backend_version = await response.text();
 const version = ref(APP_VERSION);
 </script>
 <template>
-  <p>Version: Backend: {{ backend_version }}, Frontend: {{ version }}</p>
+  <p style="font-size: x-small;">Version: Backend: {{ backend_version }}, Frontend: {{ version }}</p>
 </template>
