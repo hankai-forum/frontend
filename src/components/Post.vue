@@ -20,6 +20,7 @@ const route = useRoute()
   const userId = ref("")
   const loaded = ref(false)
   const username = ref("")
+  const OPUsername = ref("")
 
   async function getPost(){
     const response = await fetch(`http://localhost:3000/api/posts/${postId}`)
@@ -27,6 +28,7 @@ const route = useRoute()
     title.value = post.q
     description.value = post.d
     postUserId.value = post.userId
+    OPUsername.value = (await getUsername(post.userId)).username
     await getPostComments()
     await isLoggedIn()
   }
@@ -130,8 +132,9 @@ const route = useRoute()
 
 
 <template>
-  <div v-if="isOP" class="left-column" style="display: flex; flex-direction: column; width: 100%; align-items: center;">
-    <button class="side-button" @click="deletePost">Delete Post</button>
+  <div class="left-column" style="display: flex; flex-direction: column; width: 100%; align-items: center;">
+    <p>Posted by {{ OPUsername }}</p>
+    <button v-if="isOP" class="side-button" @click="deletePost">Delete Post</button>
   </div>
   <div class="middle-column ">
     <div class="post-data">
