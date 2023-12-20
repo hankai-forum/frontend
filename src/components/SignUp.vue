@@ -2,6 +2,7 @@
 <script setup>
   import { ref, watch } from "vue"
   import { useRouter } from "vue-router"
+  import TextInput from "@/components/TextInput.vue";
 
   const router = useRouter()
 
@@ -68,16 +69,16 @@
       <button @click="loginClick" class="side-button" style="margin-top: 0">Registered? <span style="color: yellow; text-decoration: underline">Login</span> here! 🖐️</button>
     </div>
     <div class="input-block">
-      <h1>
+      <label>
         Username:
-      </h1>
-      <input :class="userExists ? 'input-area-red' : 'input-area'" v-model="username" placeholder="Your username 🧑🏻‍🦱" />
+      </label>
+      <TextInput v-model="username" placeholder="Your username 🧑🏻‍🦱" rows="1" resize="none" overflow="hidden" />
     </div>
     <div class="input-block">
-      <h1>
+      <label>
         Password:
-      </h1>
-      <input class="input-area" v-model="password" placeholder="Your password 🔑" type="password" />
+      </label>
+      <TextInput v-model="password" placeholder="Your password 🔑" type="password" rows="1" resize="none" overflow="hidden" />
     </div>
     <button v-if="!userExists" @click="signupSubmit" class="side-button" style="margin-top: 0">Submit!</button>
     <p class="user-exists-text" v-else>Username already exists, pick another one!</p>
@@ -86,6 +87,12 @@
 
 
 <style scoped>
+label {
+  font-size: xx-large;
+  font-weight: bold;
+  min-width: 10rem;
+}
+
 .user-exists-text {
   color: red;
 }

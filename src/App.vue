@@ -24,7 +24,7 @@ body {
   grid-template-rows: auto 1fr;
   grid-gap: 0.5rem;
   min-height: 100vh;
-  font-family: Trispace, monospace;
+
   color: white;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -65,5 +65,6 @@ button:hover {
 
 *, *:before, *:after {
   box-sizing: border-box;
+  font-family: Trispace, monospace;
 }
 </style>

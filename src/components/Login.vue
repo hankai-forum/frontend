@@ -63,13 +63,13 @@
       <label>
         Username:
       </label>
-      <TextInput v-model="username" placeholder="Your username 🧑🏻‍🦱" rows="1" resize="none" />
+      <TextInput v-model="username" placeholder="Your username 🧑🏻‍🦱" rows="1" resize="none" overflow="hidden" />
     </div>
     <div class="input-block">
       <label>
         Password:
       </label>
-      <TextInput v-model="password" placeholder="Your password 🔑" type="password" rows="1" resize="none" />
+      <TextInput v-model="password" placeholder="Your password 🔑" type="password" rows="1" resize="none" overflow="hidden" />
     </div>
     <p v-if="wrong" style="color: red; margin-top: -5px">Username or password incorrect</p>
     <button @click="loginSubmit" class="side-button" style="margin-top: 0">Submit!</button>
