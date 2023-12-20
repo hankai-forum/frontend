@@ -72,7 +72,7 @@
       <label>
         Username:
       </label>
-      <TextInput v-model="username" placeholder="Your username 🧑🏻‍🦱" rows="1" resize="none" overflow="hidden" />
+      <TextInput v-model="username" placeholder="Your username 🧑🏻‍🦱" type="username" rows="1" resize="none" overflow="hidden" />
     </div>
     <div class="input-block">
       <label>

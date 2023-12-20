@@ -15,6 +15,7 @@
   }
 
   watch(username, async (newUsername, oldUsername) => {
+    username.value = username.value.replace(/\n/g,'')
     wrong.value = false
   })
 
@@ -63,7 +64,7 @@
       <label>
         Username:
       </label>
-      <TextInput v-model="username" placeholder="Your username 🧑🏻‍🦱" rows="1" :styles="{'resize': 'none', 'overflow': 'hidden'}" />
+      <TextInput v-model="username" placeholder="Your username 🧑🏻‍🦱" type="username" rows="1" :styles="{'resize': 'none', 'overflow': 'hidden', 'overflow-x': 'scroll'}" />
     </div>
     <div class="input-block">
       <label>
