@@ -3,6 +3,7 @@
   import { onMounted, ref } from "vue"
   import { useRoute, useRouter } from "vue-router";
   import CommentCard from "./CommentCard.vue";
+  import TextInput from "@/components/TextInput.vue";
 
   const route = useRoute()
   const router = useRouter()
@@ -129,7 +130,7 @@
     </div>
     <div class="post-comments">
       <div v-if="loggedIn" class="add-comment">
-        <textarea class="input-area" rows="2" v-model="newComment" placeholder="Add a comment!" />
+        <TextInput class="input-area" rows="2" v-model="newComment" placeholder="Add a comment!" :styles="{'margin': '0'}" />
         <button class="side-button submit-button" @click="submit">Submit!</button>
       </div>
       <p v-if="postComments.length === 0" style="color:#9ccc65">No comments</p>
@@ -146,7 +147,6 @@
   width: 100%;
   resize: vertical;
   min-height: 1.6em;
-  padding: 3px 5px 3px 5px;
 }
 
 .question-description{

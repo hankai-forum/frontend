@@ -1,18 +1,20 @@
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
 import { ref, watch } from "vue"
-const props = defineProps(['rows', 'placeholder', 'type', 'modelValue', 'minHeight', 'fontSize', 'resize', 'maxWidth', 'overflow'])
+const props = defineProps(['rows', 'placeholder', 'type', 'modelValue', 'minHeight', 'fontSize', 'resize', 'maxWidth', 'overflow', 'styles'])
 const emits = defineEmits(['update:modelValue'])
 const rows = ref(props.rows || 1);
+console.log(props.styles)
 
 </script>
 
 <template>
   <span :style="{'width': `${maxWidth}`}">
     <input v-if="type" class="input area" :placeholder="placeholder" :value="modelValue" :type="type"
-      @input="$emit('update:modelValue', $event.target.value)" :style="{'min-height': `${minHeight}rem`, 'font-size': fontSize, 'resize': resize, 'overflow': overflow}" />
+      @input="$emit('update:modelValue', $event.target.value)" :style="styles" />
+
     <textarea v-else class="input area" :rows="rows" :placeholder="placeholder" :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)" :style="{'min-height': `${minHeight}rem`, 'font-size': fontSize, 'resize': resize, 'overflow': overflow}" />
+      @input="$emit('update:modelValue', $event.target.value)" :style="styles" />
   </span>
 </template>
 

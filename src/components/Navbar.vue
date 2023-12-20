@@ -51,7 +51,7 @@
         </router-link>
     </div >
 
-    <TextInput class="middle-column" minHeight="1" rows="1" font-size="small" resize="none" />
+    <TextInput class="middle-column" rows="1" :styles="{'min-height': '1', 'resize': 'none', 'font-size': 'small'}" />
 
     <div class="right-column" style="justify-self: flex-end" >
       <div v-if="loggedIn" class="log-block">
