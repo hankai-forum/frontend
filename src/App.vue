@@ -1,7 +1,7 @@
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
 import Navbar from "./components/Navbar.vue"
-
+import Version from "./components/Version.vue"
 </script>
 
 <template>
@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar.vue"
     <div class="main-body" style="grid-row: 2">
       <router-view></router-view>
     </div>
+    <Suspense><Version /></Suspense>
   </div>
 </template>
 
