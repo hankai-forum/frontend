@@ -19,7 +19,8 @@
         body: JSON.stringify({
           q: title.value,
           d: description.value,
-          userId: userId.value
+          userId: userId.value,
+          votes: 0,
         }),
       });
     console.log(await response.json())

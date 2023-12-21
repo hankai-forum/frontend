@@ -17,7 +17,7 @@
     for (const post of posts.reverse()){
       const title = post.q
       const description = post.d
-      cards.value.push({q: title, d: description, to: `/post/${post._id}`})
+      cards.value.push({q: title, d: description, to: `/post/${post._id}`, votes: post.votes})
     }
   }
 
@@ -56,7 +56,7 @@
       </router-link>
       <p v-else style="font-size: x-large">Posts</p>
     </div>
-    <Card v-for="item in cards" :question="item.q" :description="item.d" :postUrl="item.to" />
+    <Card v-for="item in cards" :question="item.q" :description="item.d" :postUrl="item.to" :votes="item.votes" />
   </div>
 <!--  <div v-if="!loggedIn" class="right-column" style="margin-top: 15px">-->
 <!--    <button @click="loginClick" class="side-button">Login</button>-->
