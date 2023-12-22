@@ -2,72 +2,133 @@
 <script setup>
   import SvgIcon from '@jamescoyle/vue-icon'
   import { mdiArrowUpBoldOutline, mdiArrowDownBoldOutline, mdiArrowUpBold, mdiArrowDownBold } from '@mdi/js'
-  import { ref } from "vue"
+  import { ref, onMounted } from "vue"
 
   const props = defineProps({
     question: String,
     description: String,
-    postUrl: String,
-    votes: Number
+    postId: String,
+    loggedIn: Boolean,
+    userId: String
   })
 
-  const votes = ref(props.votes)
+  const votes = ref(0)
   const upVoted = ref(false)
   const downVoted = ref(false)
 
-  function addVote(amount){
+  async function newVote(type){
+    const response = await fetch(`http://localhost:3000/api/votes/add`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: props.userId,
+          postId: props.postId,
+          commentId: "",
+          type: type
+        }),
+      })
+  }
+
+  async function removeVote(){
+    const response = await fetch(`http://localhost:3000/api/votes/posts/del/${props.userId}/${props.postId}`, {
+      method: "DELETE",
+      mode: 'cors',
+      headers: {
+          'Content-Type': 'application/json',
+      }
+    })
+  }
+
+  function addVote(){
     if (!downVoted.value){
       if (!upVoted.value){
-        votes.value = votes.value + amount
+        votes.value = votes.value + 1
+        newVote(1)  // upvote type 1
       }else{
-        votes.value = votes.value - amount
+        votes.value = votes.value - 1
+        removeVote()
       }
       upVoted.value = !upVoted.value
+    }else{
+      votes.value = votes.value + 2
+      upVoted.value = !upVoted.value
+      downVoted.value = !downVoted.value
+      newVote(1)
+      removeVote()
     }
   }
 
-  function reduceVote(amount){
+  function reduceVote(){
     if (!upVoted.value){
       if (!downVoted.value){
-        votes.value = votes.value - amount
+        votes.value = votes.value - 1
+        removeVote()
       }else{
-        votes.value = votes.value + amount
+        votes.value = votes.value + 1
+        newVote(0)  // downvote type 0
       }
       downVoted.value = !downVoted.value
+    }else{
+      votes.value = votes.value - 2
+      upVoted.value = !upVoted.value
+      downVoted.value = !downVoted.value
+      newVote(0)
+      removeVote()
     }
   }
+
+  async function getUserVote(){
+    const response = await fetch(`http://localhost:3000/api/votes/${props.userId}/${props.postId}`)
+    const data = await response.json()
+    console.log(data)
+    if (data.length !== 0){
+      data[0].type ? upVoted.value = true : downVoted.value = true
+    }
+  }
+
+  async function getVotes(){
+    const response = await fetch(`http://localhost:3000/api/votes/posts/${props.postId}`)
+    const data = await response.json()
+    votes.value = data.upvotes.length - data.downvotes.length
+  }
+
+  onMounted(() => {
+    getVotes()
+    getUserVote()
+  })
 </script>
 
 
 <template>
   <div class="content-wrapper">
     <div class="vote-block">
-      <button v-if="!upVoted" @click="addVote(1)" class="vote-button">
+      <button v-if="!upVoted" @click="addVote" class="vote-button">
         <SvgIcon class="arrow" type="mdi" :path="mdiArrowUpBoldOutline" />
       </button>
-      <button v-else @click="addVote(1)" class="vote-button">
+      <button v-else @click="addVote " class="vote-button">
         <SvgIcon class="arrow" type="mdi" :path="mdiArrowUpBold" />
       </button>
 
       <p class="vote-count">{{ votes }}</p>
 
-      <button v-if="!downVoted" @click="reduceVote(1)" class="vote-button">
+      <button v-if="!downVoted" @click="reduceVote" class="vote-button">
         <SvgIcon class="arrow" type="mdi" :path="mdiArrowDownBoldOutline" />
       </button>
-      <button v-else @click="reduceVote(1)" class="vote-button">
+      <button v-else @click="reduceVote" class="vote-button">
         <SvgIcon class="arrow" type="mdi" :path="mdiArrowDownBold" />
       </button>
     </div>
-    <div class="card-contents">
-      <router-link :to="postUrl">
-        <p class="question-title">
-          {{ question }}
-        </p>
-        <p>
-          {{ description }}
-        </p>
-      </router-link>
-    </div>
+    <router-link class="card-contents" :to="`/post/${postId}`">
+      <p class="question-title">
+        {{ question }}
+      </p>
+      <p>
+        {{ description }}
+      </p>
+    </router-link>
   </div>
 </template>
 
@@ -110,6 +171,7 @@
   justify-self: center;
   margin-right: auto;
   margin-left: -2em;
+  width: 100%;
 }
 
 .vote-block{
