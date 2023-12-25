@@ -10,14 +10,14 @@ const route = useRoute()
   const postId = route.params.postId
   const title = ref("")
   const description = ref("")
-  const postUserId = ref("")
+  // const postUserId = ref("")
   const postComments = ref([])
   const commentUsernames = ref([])
   const newComment = ref("")
   const loggedIn = ref(false)
   const isOP = ref(false)
   const jwtToken = ref("")
-  const userId = ref("")
+  // const userId = ref("")
   const loaded = ref(false)
   const username = ref("")
   const OPUsername = ref("")
@@ -27,25 +27,22 @@ const route = useRoute()
     const post = (await response.json())[0]
     title.value = post.q
     description.value = post.d
-    postUserId.value = post.userId
-    OPUsername.value = (await getUsername(post.userId)).username
+    //postUserId.value = post.userId
+    OPUsername.value = post.op
     await getPostComments()
     await isLoggedIn()
   }
-
+/*
   async function getUsername(userId){
     const response = await fetch(`http://localhost:3000/api/auth/user/getUser/${userId}`)
     return (await response.json())[0]
   }
-
+*/
   async function getPostComments(){
-    const response = await fetch(`http://localhost:3000/api/posts/comments/${postId}`)
-    postComments.value = await response.json()
-    commentUsernames.value = []
-    for (const comment of postComments.value){
-      const username = (await getUsername(comment.userId)).username
-      commentUsernames.value.push(username)
-    }
+    const res = await fetch(`http://localhost:3000/api/posts/comments/${postId}`)
+    const response = await res.json()
+    postComments.value = response.comments
+    commentUsernames.value = response.commentUsernames
   }
 
   async function submit(){
@@ -59,7 +56,7 @@ const route = useRoute()
           parentId: postId,
           parentPost: true,
           content: newComment.value,
-          userId: userId.value
+          tokes: jwtToken.value
         }),
       })
     await getPostComments()
@@ -94,8 +91,8 @@ const route = useRoute()
   }
 
   async function checkIsOP(){
-    const token = localStorage.getItem('token')
-    const response = await fetch("http://localhost:3000/api/auth/user/details", {
+    //const uid = localStorage.getItem('uid')
+    /*const response = await fetch("http://localhost:3000/api/auth/user/details", {
       method: 'POST',
         mode: 'cors',
         headers: {
@@ -110,6 +107,9 @@ const route = useRoute()
     if (userId.value === postUserId.value){
       isOP.value = true
     }
+    */
+    //isOP.value = uid === postUserId;
+    isOP.value = true
     loaded.value = true
   }
 
@@ -151,8 +151,8 @@ const route = useRoute()
         <button class="side-button submit-button" @click="submit">Submit!</button>
       </div>
       <p v-if="postComments.length === 0" style="color:#9ccc65">No comments</p>
-      <CommentCard v-else-if="loaded" @deleteComment="(commentId) => deleteComment(commentId)" v-for="(comment, i, j) in postComments" :comment="comment" :userId="userId" :username="commentUsernames[i]" />
-      <CommentCard v-else v-for="(comment, i, j) in postComments" :comment="comment" :userId="userId" :username="commentUsernames[i]" />
+      <CommentCard v-else-if="loaded" @deleteComment="(commentId) => deleteComment(commentId)" v-for="(comment, i, j) in postComments" :comment="comment" :username="commentUsernames[i]" />
+      <CommentCard v-else v-for="(comment, i, j) in postComments" :comment="comment"  :username="commentUsernames[i]" />
     </div>
   </div>
 </template>
