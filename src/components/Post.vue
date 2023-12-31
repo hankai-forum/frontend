@@ -4,6 +4,8 @@ import {onMounted, ref} from "vue"
 import {useRoute, useRouter} from "vue-router";
 import CommentCard from "./CommentCard.vue";
 import TextInput from "@/components/TextInput.vue";
+import {mdiArrowDownBold, mdiArrowDownBoldOutline, mdiArrowUpBold, mdiArrowUpBoldOutline} from "@mdi/js";
+import SvgIcon from "@jamescoyle/vue-icon";
 
 const route = useRoute()
   const router = useRouter()
@@ -21,6 +23,10 @@ const route = useRoute()
   const loaded = ref(false)
   const username = ref("")
   const OPUsername = ref("")
+
+  const votes = ref(0)
+  const upVoted = ref(false)
+  const downVoted = ref(false)
 
   async function getPost(){
     const response = await fetch(`http://localhost:3000/api/posts/${postId}`)
@@ -43,6 +49,7 @@ const route = useRoute()
     const response = await res.json()
     postComments.value = response.comments
     commentUsernames.value = response.commentUsernames
+    console.log("abc: ", commentUsernames)
   }
 
   async function submit(){
@@ -56,6 +63,7 @@ const route = useRoute()
           parentId: postId,
           parentPost: true,
           content: newComment.value,
+          username: username.value,
           tokes: jwtToken.value
         }),
       })
@@ -147,6 +155,25 @@ const route = useRoute()
     </div>
     <div class="post-comments">
       <div v-if="loggedIn" class="add-comment">
+
+        <div class="vote-block">
+          <button v-if="!upVoted" @click="addVote" class="vote-button">
+            <SvgIcon class="arrow" type="mdi" :path="mdiArrowUpBoldOutline" />
+          </button>
+          <button v-else @click="addVote " class="vote-button">
+            <SvgIcon class="arrow" type="mdi" :path="mdiArrowUpBold" />
+          </button>
+
+          <p class="vote-count">{{ votes }}</p>
+
+          <button v-if="!downVoted" @click="reduceVote" class="vote-button">
+            <SvgIcon class="arrow" type="mdi" :path="mdiArrowDownBoldOutline" />
+          </button>
+          <button v-else @click="reduceVote" class="vote-button">
+            <SvgIcon class="arrow" type="mdi" :path="mdiArrowDownBold" />
+          </button>
+        </div>
+
         <TextInput class="input-area" rows="2" v-model="newComment" placeholder="Add a comment!" :styles="{'margin': '0'}" />
         <button class="side-button submit-button" @click="submit">Submit!</button>
       </div>
@@ -177,5 +204,32 @@ const route = useRoute()
   height: 100%;
   margin-bottom: 25px;
   gap: 10px;
+}
+
+.vote-block{
+  margin-right: auto;
+  padding: 0;
+}
+
+.vote-button{
+  margin: 0;
+  padding: 0 0.3em 0 0.3em;
+  border: 0;
+}
+
+.vote-button:hover{
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.arrow{
+  height: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.vote-count{
+  font-size: large;
+  margin: 0.16rem 0 0.16rem 0
 }
 </style>

@@ -9,8 +9,8 @@
 
   const links = ref([
     { url: '/', text: 'Home' },
-    { url: '/', text: 'Home' },
-    { url: '/', text: 'Home' },
+    // { url: '/', text: 'Home' },
+    // { url: '/', text: 'Home' },
   ]);
 
   const loggedIn = ref(false)
