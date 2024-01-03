@@ -5,7 +5,7 @@
 
   const title = ref("")
   const description = ref("")
-  const userId = ref("")
+  const username = ref("")
 
   const router = useRouter()
 
@@ -19,8 +19,8 @@
         body: JSON.stringify({
           q: title.value,
           d: description.value,
-          userId: userId.value,
           votes: 0,
+          username: username.value
         }),
       });
     console.log(await response.json())
@@ -40,7 +40,7 @@
         }),
     });
     const data = await response.json()
-    userId.value = data.userId
+    username.value = data.username
   })
 </script>
 

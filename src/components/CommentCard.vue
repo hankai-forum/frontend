@@ -7,7 +7,6 @@
 
   const props = defineProps({
     comment: Object,
-    userId: String,
     username: String
   })
 
@@ -18,7 +17,7 @@
   const isOP = ref(false)
 
   onMounted(() => {
-    if (props.comment.userId === props.userId){
+    if (props.comment.username === props.username){
       isOP.value = true
     }
   })
@@ -27,7 +26,7 @@
 
 <template>
   <div class="comment-card-wrapper">
-    <p class="commenter">{{ props.username }}</p>
+    <p class="commenter">{{ props.comment.username }}</p>
     <div class="comment-content-wrapper">
       <p class="">
         {{ props.comment.content }}

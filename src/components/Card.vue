@@ -9,7 +9,7 @@
     description: String,
     postId: String,
     loggedIn: Boolean,
-    userId: String
+    username: String
   })
 
   const votes = ref(0)
@@ -24,7 +24,7 @@
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: props.userId,
+          username: props.username,
           postId: props.postId,
           commentId: "",
           type: type
@@ -33,7 +33,7 @@
   }
 
   async function removeVote(){
-    const response = await fetch(`http://localhost:3000/api/votes/posts/del/${props.userId}/${props.postId}`, {
+    const response = await fetch(`http://localhost:3000/api/votes/posts/del/${props.username}/${props.postId}`, {
       method: "DELETE",
       mode: 'cors',
       headers: {
@@ -81,7 +81,7 @@
   }
 
   async function getUserVote(){
-    const response = await fetch(`http://localhost:3000/api/votes/${props.userId}/${props.postId}`)
+    const response = await fetch(`http://localhost:3000/api/votes/${props.username}/${props.postId}`)
     const data = await response.json()
     console.log(data)
     if (data.length !== 0){

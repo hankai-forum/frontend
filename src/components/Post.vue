@@ -12,18 +12,14 @@ const route = useRoute()
   const postId = route.params.postId
   const title = ref("")
   const description = ref("")
-  // const postUserId = ref("")
   const postComments = ref([])
   const commentUsernames = ref([])
   const newComment = ref("")
   const loggedIn = ref(false)
   const isOP = ref(false)
   const jwtToken = ref("")
-  // const userId = ref("")
-  const loaded = ref(false)
   const username = ref("")
   const OPUsername = ref("")
-
   const votes = ref(0)
   const upVoted = ref(false)
   const downVoted = ref(false)
@@ -33,23 +29,15 @@ const route = useRoute()
     const post = (await response.json())[0]
     title.value = post.q
     description.value = post.d
-    //postUserId.value = post.userId
-    OPUsername.value = post.op
+    OPUsername.value = post.username
+    isLoggedIn()
     await getPostComments()
-    await isLoggedIn()
   }
-/*
-  async function getUsername(userId){
-    const response = await fetch(`http://localhost:3000/api/auth/user/getUser/${userId}`)
-    return (await response.json())[0]
-  }
-*/
-  async function getPostComments(){
+
+async function getPostComments(){
     const res = await fetch(`http://localhost:3000/api/posts/comments/${postId}`)
     const response = await res.json()
     postComments.value = response.comments
-    commentUsernames.value = response.commentUsernames
-    console.log("abc: ", commentUsernames)
   }
 
   async function submit(){
@@ -72,7 +60,6 @@ const route = useRoute()
   }
 
   async function deleteComment(commentId){
-    console.log(commentId)
     const response = await fetch(`http://localhost:3000/api/posts/comments/del/${commentId}`, {
       method: "DELETE",
       mode: 'cors',
@@ -99,26 +86,11 @@ const route = useRoute()
   }
 
   async function checkIsOP(){
-    //const uid = localStorage.getItem('uid')
-    /*const response = await fetch("http://localhost:3000/api/auth/user/details", {
-      method: 'POST',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "token": token
-        }),
-    });
-    const data = await response.json()
-    userId.value = data.userId
-    if (userId.value === postUserId.value){
-      isOP.value = true
+    if (username.value !== ""){
+      if (username.value === OPUsername.value){
+        isOP.value = true
+      }
     }
-    */
-    //isOP.value = uid === postUserId;
-    isOP.value = true
-    loaded.value = true
   }
 
   function isLoggedIn(){
@@ -133,8 +105,89 @@ const route = useRoute()
     }
   }
 
+  async function newVote(type){
+    const response = await fetch(`http://localhost:3000/api/votes/add`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username.value,
+          postId: postId,
+          commentId: "",
+          type: type
+        }),
+      })
+  }
+
+  async function removeVote(){
+    const response = await fetch(`http://localhost:3000/api/votes/posts/del/${username.value}/${postId}`, {
+      method: "DELETE",
+      mode: 'cors',
+      headers: {
+          'Content-Type': 'application/json',
+      }
+    })
+  }
+
+  function addVote(){
+    if (!downVoted.value){
+      if (!upVoted.value){
+        votes.value = votes.value + 1
+        newVote(1)  // upvote type 1
+      }else{
+        votes.value = votes.value - 1
+        removeVote()
+      }
+      upVoted.value = !upVoted.value
+    }else{
+      votes.value = votes.value + 2
+      upVoted.value = !upVoted.value
+      downVoted.value = !downVoted.value
+      newVote(1)
+      removeVote()
+    }
+  }
+
+  function reduceVote(){
+    if (!upVoted.value){
+      if (!downVoted.value){
+        votes.value = votes.value - 1
+        removeVote()
+      }else{
+        votes.value = votes.value + 1
+        newVote(0)
+      }
+      downVoted.value = !downVoted.value
+    }else{
+      votes.value = votes.value - 2
+      upVoted.value = !upVoted.value
+      downVoted.value = !downVoted.value
+      newVote(0)
+      removeVote()
+    }
+  }
+
+  async function getUserVote(){
+    const response = await fetch(`http://localhost:3000/api/votes/${username.value}/${postId}`)
+    const data = await response.json()
+    console.log(data)
+    if (data.length !== 0){
+      data[0].type ? upVoted.value = true : downVoted.value = true
+    }
+  }
+
+  async function getVotes(){
+    const response = await fetch(`http://localhost:3000/api/votes/posts/${postId}`)
+    const data = await response.json()
+    votes.value = data.upvotes.length - data.downvotes.length
+  }
+
   onMounted(() => {
     getPost()
+    getVotes()
+    getUserVote()
   })
 </script>
 
@@ -178,8 +231,7 @@ const route = useRoute()
         <button class="side-button submit-button" @click="submit">Submit!</button>
       </div>
       <p v-if="postComments.length === 0" style="color:#9ccc65">No comments</p>
-      <CommentCard v-else-if="loaded" @deleteComment="(commentId) => deleteComment(commentId)" v-for="(comment, i, j) in postComments" :comment="comment" :username="commentUsernames[i]" />
-      <CommentCard v-else v-for="(comment, i, j) in postComments" :comment="comment"  :username="commentUsernames[i]" />
+      <CommentCard v-else @deleteComment="(commentId) => deleteComment(commentId)" v-for="(comment, i, j) in postComments" :comment="comment" :username="username" />
     </div>
   </div>
 </template>
