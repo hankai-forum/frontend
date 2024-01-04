@@ -213,7 +213,7 @@ const route = useRoute()
       <div v-if="loggedIn" class="add-comment">
 
         <div class="vote-block">
-          <div v-if="props.loggedIn">
+          <div v-if="loggedIn">
             <button v-if="!upVoted" @click="addVote" class="vote-button">
               <SvgIcon class="arrow" type="mdi" :path="mdiArrowUpBoldOutline" />
             </button>
@@ -232,7 +232,7 @@ const route = useRoute()
 
           <p class="vote-count">{{ votes }}</p>
 
-          <div v-if="props.loggedIn">
+          <div v-if="loggedIn">
             <button v-if="!downVoted" @click="reduceVote" class="vote-button">
               <SvgIcon class="arrow" type="mdi" :path="mdiArrowDownBoldOutline" />
             </button>
