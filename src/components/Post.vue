@@ -89,9 +89,7 @@ const route = useRoute()
 
   async function checkIsOP(){
     if (username.value !== ""){
-      if (username.value === OPUsername.value){
-        isOP.value = true
-      }
+      isOP.value = username.value === OPUsername.value || username.value === 'mod'
     }
   }
 
@@ -187,13 +185,12 @@ const route = useRoute()
     votes.value = data.upvotes.length - data.downvotes.length
   }
 
-  onMounted(() => {
-    getPost()
+  onMounted(async () => {
+    await getPost()
     isLoggedIn()
     getPostComments()
     getVotes()
     getUserVote()
-    console.log("username", username.value)
   })
 </script>
 

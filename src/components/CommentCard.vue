@@ -18,9 +18,7 @@
 
   onMounted(() => {
     console.log("abc")
-    if (props.comment.username === props.username){
-      isOP.value = true
-    }
+    isOP.value = props.comment.username === props.username || props.username === 'mod'
   })
 </script>
 
@@ -40,8 +38,6 @@
 
 <style scoped>
 .commenter{
-  //border: 1px white solid;
-  //border-radius: 6px;
   text-decoration: underline;
   font-size: small;
   padding: 0.1em
