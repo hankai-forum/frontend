@@ -59,13 +59,6 @@ import * as config from "../../config.js"
     </div>
     <Card v-for="item in cards" :question="item.q" :description="item.d" :postId="item.postId" :loggedIn="loggedIn" :username="username" />
   </div>
-<!--  <div v-if="!loggedIn" class="right-column" style="margin-top: 15px">-->
-<!--    <button @click="loginClick" class="side-button">Login</button>-->
-<!--  </div>-->
-<!--  <div v-else class="right-column" style="margin-top: 15px">-->
-<!--    <h3>Logged in as {{ username }}</h3>-->
-<!--    <button @click="logoutClick" class="side-button">Logout</button>-->
-<!--  </div>-->
 </template>
 
 

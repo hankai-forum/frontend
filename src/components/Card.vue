@@ -106,21 +106,42 @@
 <template>
   <div class="content-wrapper">
     <div class="vote-block">
-      <button v-if="!upVoted" @click="addVote" class="vote-button">
-        <SvgIcon class="arrow" type="mdi" :path="mdiArrowUpBoldOutline" />
-      </button>
-      <button v-else @click="addVote " class="vote-button">
-        <SvgIcon class="arrow" type="mdi" :path="mdiArrowUpBold" />
-      </button>
+      <div v-if="props.loggedIn">
+        <button v-if="!upVoted" @click="addVote" class="vote-button">
+          <SvgIcon class="arrow" type="mdi" :path="mdiArrowUpBoldOutline" />
+        </button>
+        <button v-else @click="addVote " class="vote-button">
+          <SvgIcon class="arrow" type="mdi" :path="mdiArrowUpBold" />
+        </button>
+      </div>
+      <div v-else>
+        <button v-if="!upVoted" class="vote-button">
+          <SvgIcon class="arrow" type="mdi" :path="mdiArrowUpBoldOutline" />
+        </button>
+        <button v-else class="vote-button">
+          <SvgIcon class="arrow" type="mdi" :path="mdiArrowUpBold" />
+        </button>
+      </div>
 
       <p class="vote-count">{{ votes }}</p>
 
-      <button v-if="!downVoted" @click="reduceVote" class="vote-button">
-        <SvgIcon class="arrow" type="mdi" :path="mdiArrowDownBoldOutline" />
-      </button>
-      <button v-else @click="reduceVote" class="vote-button">
-        <SvgIcon class="arrow" type="mdi" :path="mdiArrowDownBold" />
-      </button>
+
+      <div v-if="props.loggedIn">
+        <button v-if="!downVoted" @click="reduceVote" class="vote-button">
+          <SvgIcon class="arrow" type="mdi" :path="mdiArrowDownBoldOutline" />
+        </button>
+        <button v-else @click="reduceVote" class="vote-button">
+          <SvgIcon class="arrow" type="mdi" :path="mdiArrowDownBold" />
+        </button>
+      </div>
+      <div v-else>
+        <button v-if="!upVoted" class="vote-button">
+          <SvgIcon class="arrow" type="mdi" :path="mdiArrowDownBoldOutline" />
+        </button>
+        <button v-else class="vote-button">
+          <SvgIcon class="arrow" type="mdi" :path="mdiArrowDownBold" />
+        </button>
+      </div>
     </div>
     <router-link class="card-contents" :to="`/post/${postId}`">
       <p class="question-title">
