@@ -25,17 +25,15 @@ const route = useRoute()
   const upVoted = ref(false)
   const downVoted = ref(false)
 
-  function getPost(){
-    const response = fetch(`${config.BACKEND}/api/posts/${postId}`)
-    const post = response
+  async function getPost(){
+    const response = await fetch(`${config.BACKEND}/api/posts/${postId}`)
+    const post = (await response.json())[0]
     title.value = post.q
     description.value = post.d
     OPUsername.value = post.username
-    isLoggedIn()
-    getPostComments()
   }
 
-async function getPostComments(){
+  async function getPostComments(){
     const res = await fetch(`${config.BACKEND}/api/posts/comments/${postId}`)
     const response = await res.json()
     postComments.value = response.comments
@@ -191,6 +189,8 @@ async function getPostComments(){
 
   onMounted(() => {
     getPost()
+    isLoggedIn()
+    getPostComments()
     getVotes()
     getUserVote()
     console.log("username", username.value)
