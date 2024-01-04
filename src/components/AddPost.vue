@@ -11,6 +11,9 @@ import * as config from "../../config.js"
   const router = useRouter()
 
   async function submit(){
+    if (title.value.trim().length === 0 || description.value.trim().length === 0){
+      return 0;
+    }
     const response = await fetch(`${config.BACKEND}/api/posts/add`, {
         method: 'POST',
         mode: 'cors',

@@ -17,6 +17,7 @@
   const isOP = ref(false)
 
   onMounted(() => {
+    console.log("abc")
     if (props.comment.username === props.username){
       isOP.value = true
     }

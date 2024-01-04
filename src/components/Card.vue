@@ -62,7 +62,7 @@
     }
   }
 
-  function reduceVote(){
+    function reduceVote(){
     if (!upVoted.value){
       if (!downVoted.value){
         votes.value = votes.value - 1

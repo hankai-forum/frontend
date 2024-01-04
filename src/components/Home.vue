@@ -57,7 +57,7 @@ import * as config from "../../config.js"
       </router-link>
       <p v-else style="font-size: x-large">Posts</p>
     </div>
-    <Card v-for="item in cards" :question="item.q" :description="item.d" :postId="item.postId" :loggedIn="loggedIn" :username="item.username" />
+    <Card v-for="item in cards" :question="item.q" :description="item.d" :postId="item.postId" :loggedIn="loggedIn" :username="username" />
   </div>
 <!--  <div v-if="!loggedIn" class="right-column" style="margin-top: 15px">-->
 <!--    <button @click="loginClick" class="side-button">Login</button>-->

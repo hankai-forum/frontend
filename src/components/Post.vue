@@ -25,14 +25,14 @@ const route = useRoute()
   const upVoted = ref(false)
   const downVoted = ref(false)
 
-  async function getPost(){
-    const response = await fetch(`${config.BACKEND}/api/posts/${postId}`)
-    const post = (await response.json())[0]
+  function getPost(){
+    const response = fetch(`${config.BACKEND}/api/posts/${postId}`)
+    const post = response
     title.value = post.q
     description.value = post.d
     OPUsername.value = post.username
     isLoggedIn()
-    await getPostComments()
+    getPostComments()
   }
 
 async function getPostComments(){
@@ -42,6 +42,9 @@ async function getPostComments(){
   }
 
   async function submit(){
+    if (newComment.value.trim().length === 0){
+      return 0;
+    }
     const response = await fetch(`${config.BACKEND}/api/posts/comments/add`, {
         method: 'POST',
         mode: 'cors',
@@ -171,9 +174,10 @@ async function getPostComments(){
   }
 
   async function getUserVote(){
+    console.log("username: ", username.value)
     const response = await fetch(`${config.BACKEND}/api/votes/${username.value}/${postId}`)
     const data = await response.json()
-    console.log(data)
+    console.log("upvoted", data)
     if (data.length !== 0){
       data[0].type ? upVoted.value = true : downVoted.value = true
     }
@@ -189,6 +193,7 @@ async function getPostComments(){
     getPost()
     getVotes()
     getUserVote()
+    console.log("username", username.value)
   })
 </script>
 
