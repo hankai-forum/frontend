@@ -1,5 +1,6 @@
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
+  import * as config from "../../config.js"
   import SvgIcon from '@jamescoyle/vue-icon'
   import { mdiArrowUpBoldOutline, mdiArrowDownBoldOutline, mdiArrowUpBold, mdiArrowDownBold } from '@mdi/js'
   import { ref, onMounted } from "vue"
@@ -17,7 +18,7 @@
   const downVoted = ref(false)
 
   async function newVote(type){
-    const response = await fetch(`http://localhost:3000/api/votes/add`, {
+    const response = await fetch(`${config.BACKEND}/api/votes/add`, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -33,7 +34,7 @@
   }
 
   async function removeVote(){
-    const response = await fetch(`http://localhost:3000/api/votes/posts/del/${props.username}/${props.postId}`, {
+    const response = await fetch(`${config.BACKEND}/api/votes/posts/del/${props.username}/${props.postId}`, {
       method: "DELETE",
       mode: 'cors',
       headers: {
@@ -81,7 +82,7 @@
   }
 
   async function getUserVote(){
-    const response = await fetch(`http://localhost:3000/api/votes/${props.username}/${props.postId}`)
+    const response = await fetch(`${config.BACKEND}/api/votes/${props.username}/${props.postId}`)
     const data = await response.json()
     console.log(data)
     if (data.length !== 0){
@@ -90,7 +91,7 @@
   }
 
   async function getVotes(){
-    const response = await fetch(`http://localhost:3000/api/votes/posts/${props.postId}`)
+    const response = await fetch(`${config.BACKEND}/api/votes/posts/${props.postId}`)
     const data = await response.json()
     votes.value = data.upvotes.length - data.downvotes.length
   }

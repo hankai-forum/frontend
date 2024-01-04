@@ -1,5 +1,6 @@
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
+import * as config from "../../config.js"
   import { ref, watch } from "vue"
   import { useRouter } from "vue-router"
   import TextInput from "./TextInput.vue"
@@ -20,7 +21,7 @@
 
   async function loginSubmit(){
     if (username.value.length !== 0 && password.value.length !== 0){
-      const response = await fetch("http://localhost:3000/api/auth/user/signin", {
+      const response = await fetch(`${config.BACKEND}/api/auth/user/signin`, {
         method: 'POST',
         mode: 'cors',
         headers: {

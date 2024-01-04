@@ -1,4 +1,5 @@
 <script setup>
+  import * as config from "../../config.js"
   import { ref, watch } from "vue"
   import { useRouter } from "vue-router"
   import TextInput from "@/components/TextInput.vue";
@@ -20,7 +21,7 @@
       tooShort.value = true
     }else if (username.value.length >= 3 && username.value.length <= 16){
       tooShort.value = false
-      const response = await fetch(`http://localhost:3000/api/auth/user/exists/${newUsername}`)
+      const response = await fetch(`${config.BACKEND}/api/auth/user/exists/${newUsername}`)
       const exists = await response.json()
       if (exists){
         userExists.value = true
@@ -34,7 +35,7 @@
   })
 
   async function signupSubmit(){
-    const response = await fetch("http://localhost:3000/api/auth/user/signup", {
+    const response = await fetch(`${config.BACKEND}/api/auth/user/signup`, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -48,7 +49,7 @@
     console.log(await response.json())
 
     // login after sign up
-    const response2 = await fetch("http://localhost:3000/api/auth/user/signin", {
+    const response2 = await fetch(`${config.BACKEND}/api/auth/user/signin`, {
       method: 'POST',
       mode: 'cors',
       headers: {

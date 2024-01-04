@@ -1,5 +1,6 @@
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
+import * as config from "../../config.js"
   import Card from "./Card.vue"
   import { ref, onMounted } from "vue"
   import { useRouter, useRoute } from "vue-router"
@@ -12,7 +13,7 @@
   const username = ref("")
 
   async function getPosts(){
-    const response = await fetch("http://localhost:3000/api/posts");
+    const response = await fetch(`${config.BACKEND}/api/posts`);
     const posts = await response.json();
     for (const post of posts.reverse()){
       const title = post.q

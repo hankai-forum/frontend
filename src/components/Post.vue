@@ -1,5 +1,6 @@
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
+import * as config from "../../config.js"
 import {onMounted, ref} from "vue"
 import {useRoute, useRouter} from "vue-router";
 import CommentCard from "./CommentCard.vue";
@@ -25,7 +26,7 @@ const route = useRoute()
   const downVoted = ref(false)
 
   async function getPost(){
-    const response = await fetch(`http://localhost:3000/api/posts/${postId}`)
+    const response = await fetch(`${config.BACKEND}/api/posts/${postId}`)
     const post = (await response.json())[0]
     title.value = post.q
     description.value = post.d
@@ -35,13 +36,13 @@ const route = useRoute()
   }
 
 async function getPostComments(){
-    const res = await fetch(`http://localhost:3000/api/posts/comments/${postId}`)
+    const res = await fetch(`${config.BACKEND}/api/posts/comments/${postId}`)
     const response = await res.json()
     postComments.value = response.comments
   }
 
   async function submit(){
-    const response = await fetch("http://localhost:3000/api/posts/comments/add", {
+    const response = await fetch(`${config.BACKEND}/api/posts/comments/add`, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -60,7 +61,7 @@ async function getPostComments(){
   }
 
   async function deleteComment(commentId){
-    const response = await fetch(`http://localhost:3000/api/posts/comments/del/${commentId}`, {
+    const response = await fetch(`${config.BACKEND}/api/posts/comments/del/${commentId}`, {
       method: "DELETE",
       mode: 'cors',
       headers: {
@@ -75,7 +76,7 @@ async function getPostComments(){
       await deleteComment(comment._id)
     }
 
-    const response = await fetch(`http://localhost:3000/api/posts/del/${postId}`, {
+    const response = await fetch(`${config.BACKEND}/api/posts/del/${postId}`, {
       method: "DELETE",
       mode: 'cors',
       headers: {
@@ -106,7 +107,7 @@ async function getPostComments(){
   }
 
   async function newVote(type){
-    const response = await fetch(`http://localhost:3000/api/votes/add`, {
+    const response = await fetch(`${config.BACKEND}/api/votes/add`, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -122,7 +123,7 @@ async function getPostComments(){
   }
 
   async function removeVote(){
-    const response = await fetch(`http://localhost:3000/api/votes/posts/del/${username.value}/${postId}`, {
+    const response = await fetch(`${config.BACKEND}/api/votes/posts/del/${username.value}/${postId}`, {
       method: "DELETE",
       mode: 'cors',
       headers: {
@@ -170,7 +171,7 @@ async function getPostComments(){
   }
 
   async function getUserVote(){
-    const response = await fetch(`http://localhost:3000/api/votes/${username.value}/${postId}`)
+    const response = await fetch(`${config.BACKEND}/api/votes/${username.value}/${postId}`)
     const data = await response.json()
     console.log(data)
     if (data.length !== 0){
@@ -179,7 +180,7 @@ async function getPostComments(){
   }
 
   async function getVotes(){
-    const response = await fetch(`http://localhost:3000/api/votes/posts/${postId}`)
+    const response = await fetch(`${config.BACKEND}/api/votes/posts/${postId}`)
     const data = await response.json()
     votes.value = data.upvotes.length - data.downvotes.length
   }

@@ -1,4 +1,5 @@
 <script setup>
+import * as config from "../../config.js"
   import { ref, onMounted } from "vue"
   import { useRouter } from "vue-router"
   import TextInput from "./TextInput.vue"
@@ -10,7 +11,7 @@
   const router = useRouter()
 
   async function submit(){
-    const response = await fetch("http://localhost:3000/api/posts/add", {
+    const response = await fetch(`${config.BACKEND}/api/posts/add`, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -29,7 +30,7 @@
 
   onMounted(async () => {
     const token = localStorage.getItem('token')
-    const response = await fetch("http://localhost:3000/api/auth/user/details", {
+    const response = await fetch(`${config.BACKEND}/api/auth/user/details`, {
       method: 'POST',
         mode: 'cors',
         headers: {
