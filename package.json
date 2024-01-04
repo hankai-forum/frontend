@@ -2,6 +2,8 @@
   "name": "hankai-forum-frontend",
   "version": "0.1.0",
   "private": true,
+  "author": "Fustigate & YZ9551(YXZ)",
+  "license": "GPL v3",
   "type": "module",
   "scripts": {
     "dev": "vite",
