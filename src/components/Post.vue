@@ -16,24 +16,6 @@
   -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<!--
-  -- A forum software for use in a school in China.
-  -- Copyright (C) 2023-2024 Fustigate & YZ9551(YXZ)
-  --
-  -- This program is free software: you can redistribute it and/or modify
-  -- it under the terms of the GNU General Public License as published by
-  -- the Free Software Foundation, either version 3 of the License, or
-  -- (at your option) any later version.
-  --
-  -- This program is distributed in the hope that it will be useful,
-  -- but WITHOUT ANY WARRANTY; without even the implied warranty of
-  -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  -- GNU General Public License for more details.
-  --
-  -- You should have received a copy of the GNU General Public License
-  -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
-
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
 import * as config from "../../config.js"
@@ -60,6 +42,7 @@ const route = useRoute()
   const votes = ref(0)
   const upVoted = ref(false)
   const downVoted = ref(false)
+  const canUseSubmitButton = ref(false)
 
   async function getPost(){
     const response = await fetch(`${config.BACKEND}/api/posts/${postId}`)
@@ -73,12 +56,14 @@ const route = useRoute()
     const res = await fetch(`${config.BACKEND}/api/posts/comments/${postId}`)
     const response = await res.json()
     postComments.value = response.comments
+    canUseSubmitButton.value = true
   }
 
-  async function submit(){
+  async function submitNewComment(){
     if (newComment.value.trim().length === 0){
       return 0;
     }
+    canUseSubmitButton.value = false
     const response = await fetch(`${config.BACKEND}/api/posts/comments/add`, {
         method: 'POST',
         mode: 'cors',
@@ -287,7 +272,8 @@ const route = useRoute()
         </div>
 
         <TextInput class="input-area" rows="2" v-model="newComment" placeholder="Add a comment!" :styles="{'margin': '0'}" />
-        <button class="side-button submit-button" @click="submit">Submit!</button>
+        <button v-if="canUseSubmitButton" class="side-button submit-button" @click="submitNewComment">Submit!</button>
+        <button v-else class="side-button submit-button" style="color: rgba(255, 255, 255, 0.1);" @click="submitNewComment">Submitted!</button>
       </div>
       <p v-if="postComments.length === 0" style="color:#9ccc65">No comments</p>
       <CommentCard v-else @deleteComment="(commentId) => deleteComment(commentId)" v-for="(comment, i, j) in postComments" :comment="comment" :username="username" />

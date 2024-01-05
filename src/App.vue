@@ -61,6 +61,12 @@ button {
 
 button:hover {
   cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.03);
+}
+
+button:active {
+  transform: scale(.98);
 }
 
 .left-column {

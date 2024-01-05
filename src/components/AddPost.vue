@@ -16,24 +16,6 @@
   -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<!--
-  -- A forum software for use in a school in China.
-  -- Copyright (C) 2023-2024 Fustigate & YZ9551(YXZ)
-  --
-  -- This program is free software: you can redistribute it and/or modify
-  -- it under the terms of the GNU General Public License as published by
-  -- the Free Software Foundation, either version 3 of the License, or
-  -- (at your option) any later version.
-  --
-  -- This program is distributed in the hope that it will be useful,
-  -- but WITHOUT ANY WARRANTY; without even the implied warranty of
-  -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  -- GNU General Public License for more details.
-  --
-  -- You should have received a copy of the GNU General Public License
-  -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
-
 <script setup>
 import * as config from "../../config.js"
   import { ref, onMounted } from "vue"
@@ -43,6 +25,7 @@ import * as config from "../../config.js"
   const title = ref("")
   const description = ref("")
   const username = ref("")
+  const canUseSubmitButton = ref(true)
 
   const router = useRouter()
 
@@ -50,6 +33,7 @@ import * as config from "../../config.js"
     if (title.value.trim().length === 0 || description.value.trim().length === 0){
       return 0;
     }
+    canUseSubmitButton.value = false
     const response = await fetch(`${config.BACKEND}/api/posts/add`, {
         method: 'POST',
         mode: 'cors',
@@ -98,7 +82,8 @@ import * as config from "../../config.js"
       </p>
       <TextInput max-width="100%" v-model="description" rows="8" placeholder="Care to elaborate more?" />
     </div>
-    <button @click="submit">Submit!</button>
+    <button v-if="canUseSubmitButton" @click="submit">Submit!</button>
+    <button v-else style="color: rgba(255, 255, 255, 0.1);" >Submit!</button>
   </div>
 </template>
 

@@ -16,7 +16,6 @@
   -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
   import * as config from "../../config.js"

@@ -47,6 +47,7 @@
   const userExists = ref(false)
   const tooShort = ref(true)
   const pp = ""
+  const canUseSubmitButton = ref(false)
 
   function loginClick(){
     router.push("/login")
@@ -64,6 +65,7 @@
         console.log("exists")
       }else{
         userExists.value = false
+        canUseSubmitButton.value = true
       }
     }else {
       username.value = oldUsername
@@ -71,6 +73,7 @@
   })
 
   async function signupSubmit(){
+    canUseSubmitButton.value = false
     const response = await fetch(`${config.BACKEND}/api/auth/user/signup`, {
         method: 'POST',
         mode: 'cors',
@@ -82,7 +85,7 @@
           password: password.value
         }),
       });
-    console.log(await response.json())
+    // console.log(await response.json())
 
     // login after sign up
     const response2 = await fetch(`${config.BACKEND}/api/auth/user/signin`, {
@@ -100,7 +103,8 @@
     const token = data.token
     localStorage.setItem("token", token)
     localStorage.setItem("username", username.value)
-    await router.push("/")
+    // await router.push("/")
+    window.location.replace(`/`)
   }
 </script>
 
@@ -127,7 +131,8 @@
     </div>
     <p v-if="tooShort" class="user-exists-text">Username has to be greater than 3 characters!</p>
     <p v-else-if="userExists" class="user-exists-text">Username already exists, pick another one!</p>
-    <button v-else @click="signupSubmit" class="side-button" style="margin-top: 0">Submit!</button>
+    <button v-else-if="canUseSubmitButton" @click="signupSubmit" class="side-button" style="margin-top: 0">Submit!</button>
+    <button v-else class="side-button" style="margin-top: 0; color: rgba(255, 255, 255, 0.1);">Submit!</button>
   </div>
 </template>
 
