@@ -77,7 +77,7 @@ button:hover {
 
 .main-body {
   display: grid;
-  grid-template-columns: 300px auto 300px;
+  grid-template-columns: 15% 70% 15%;
   height: 100%;
 }
 

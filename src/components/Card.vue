@@ -21,7 +21,7 @@
 <script setup>
   import * as config from "../../config.js"
   import SvgIcon from '@jamescoyle/vue-icon'
-  import { mdiArrowUpBoldOutline, mdiArrowDownBoldOutline, mdiArrowUpBold, mdiArrowDownBold } from '@mdi/js'
+  import { mdiArrowUpBoldOutline, mdiArrowDownBoldOutline, mdiArrowUpBold, mdiArrowDownBold, mdiForumOutline } from '@mdi/js'
   import { ref, onMounted } from "vue"
 
   const props = defineProps({
@@ -120,6 +120,7 @@
     const response = await fetch(`${config.BACKEND}/api/posts/comments/${props.postId}`)
     const data = await response.json()
     reply.value = data.comments.length
+
   }
 
   onMounted(() => {
@@ -169,6 +170,10 @@
           <SvgIcon class="arrow" type="mdi" :path="mdiArrowDownBold" />
         </button>
       </div>
+      <div class="reply">
+        <SvgIcon type="mdi" class="reply-icon" :path="mdiForumOutline" />
+        <p style="margin:0;">{{ reply }}</p>
+      </div>
     </div>
     <router-link class="card-contents" :to="`/post/${postId}`">
       <p class="question-title">
@@ -176,9 +181,6 @@
       </p>
       <p>
         {{ description }}
-      </p>
-      <p class="reply">
-        {{ reply }} reply(ies)
       </p>
     </router-link>
   </div>
@@ -203,6 +205,12 @@
   padding: 0;
 }
 
+.reply-icon{
+  height: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
 .vote-count{
   font-size: large;
   margin: 0.16rem 0 0.16rem 0
@@ -216,7 +224,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 1rem 0 1rem;
+  padding: 0.6rem 1rem 0.6rem 1rem;
 }
 
 .card-contents{
@@ -238,7 +246,10 @@
 }
 
 .reply {
-    font-size: x-small;
+  font-size: x-small;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 a,

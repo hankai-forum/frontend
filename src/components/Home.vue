@@ -33,7 +33,7 @@ import * as config from "../../config.js"
   async function getPosts(){
     const response = await fetch(`${config.BACKEND}/api/posts`);
     const posts = await response.json();
-    for (const post of posts.reverse()){
+    for (const post of posts){
       const title = post.q
       const description = post.d
       cards.value.push({q: title, d: description, postId: post._id, loggedIn: loggedIn.value, username: post.username})
