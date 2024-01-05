@@ -16,6 +16,5 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-//export const BACKEND="http://localhost:3000"
-// export const BACKEND="http://cobble.southeastasia.cloudapp.azure.com:3000"
-export const BACKEND="http://localhost:3000"
+// export const BACKEND="http://localhost:3000"
+export const BACKEND="http://cobble.southeastasia.cloudapp.azure.com"
