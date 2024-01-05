@@ -16,23 +16,6 @@
   -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<!--
-  -- A forum software for use in a school in China.
-  -- Copyright (C) 2023-2024 Fustigate & YZ9551(YXZ)
-  --
-  -- This program is free software: you can redistribute it and/or modify
-  -- it under the terms of the GNU General Public License as published by
-  -- the Free Software Foundation, either version 3 of the License, or
-  -- (at your option) any later version.
-  --
-  -- This program is distributed in the hope that it will be useful,
-  -- but WITHOUT ANY WARRANTY; without even the implied warranty of
-  -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  -- GNU General Public License for more details.
-  --
-  -- You should have received a copy of the GNU General Public License
-  -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
 
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
@@ -52,6 +35,7 @@
   const votes = ref(0)
   const upVoted = ref(false)
   const downVoted = ref(false)
+  const reply = ref()
 
   async function newVote(type){
     const response = await fetch(`${config.BACKEND}/api/votes/add`, {
@@ -131,10 +115,17 @@
     const data = await response.json()
     votes.value = data.upvotes.length - data.downvotes.length
   }
+  
+  async function getCommentCount() {
+    const response = await fetch(`${config.BACKEND}/api/posts/comments/${props.postId}`)
+    const data = await response.json()
+    reply.value = data.comments.length
+  }
 
   onMounted(() => {
     getVotes()
     getUserVote()
+    getCommentCount()
   })
 </script>
 
@@ -186,8 +177,8 @@
       <p>
         {{ description }}
       </p>
-      <p class="corner">
-        {{ replies }} reply(ies)
+      <p class="reply">
+        {{ reply }} reply(ies)
       </p>
     </router-link>
   </div>
@@ -243,11 +234,11 @@
 .question-title {
   font-size: x-large;
   font-weight: 500;
+  margin-bottom: 0;
 }
 
-.corner {
-  align-self: flex-end;
-  justify-self: flex-end;
+.reply {
+    font-size: x-small;
 }
 
 a,
