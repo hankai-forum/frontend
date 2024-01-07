@@ -17,4 +17,4 @@
  */
 
 // export const BACKEND="http://localhost:3000"
-export const BACKEND="http://cobble.southeastasia.cloudapp.azure.com"
+export const BACKEND="https://cobble.southeastasia.cloudapp.azure.com"
