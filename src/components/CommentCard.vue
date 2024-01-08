@@ -20,6 +20,10 @@
 <script setup>
   import { useRouter } from "vue-router"
   import { onMounted, ref, defineEmits } from "vue"
+  import SvgIcon from '@jamescoyle/vue-icon'
+  import {mdiArrowUpBoldOutline, mdiPlusCircleOutline} from '@mdi/js'
+  import * as config from "../../config.js";
+
 
   const router = useRouter()
 
@@ -33,17 +37,71 @@
   const commentId = props.comment._id
 
   const isOP = ref(false)
+  const showEmojiPopup = ref(false)
+  const reactions = ref()
+
+  const toggleEmojiPopup = () => {
+    showEmojiPopup.value = !showEmojiPopup.value;
+  }
+
+  async function addReaction(emoji){
+    const response = await fetch(`${config.BACKEND}/api/reaction/add`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: props.username,
+          content: emoji,
+          commentId: commentId
+        }),
+      });
+    showEmojiPopup.value = false; // Hide the popup after selecting an emoji
+    await getReactions()
+  }
+
+  async function getReactions(){
+    const response = await fetch(`${config.BACKEND}/api/reaction/${commentId}`)
+    reactions.value = await response.json()
+    console.log("Reactions: ", reactions.value)
+  }
+
+  async function removeReaction(reactionId){
+    const response = await fetch(`${config.BACKEND}/api/reaction/del/${reactionId}`, {
+      method: "DELETE",
+      mode: 'cors',
+      headers: {
+          'Content-Type': 'application/json',
+      }
+    })
+    await getReactions()
+  }
 
   onMounted(() => {
-    console.log("abc")
     isOP.value = props.comment.username === props.username || props.username === 'mod'
+    getReactions()
   })
 </script>
 
 
 <template>
   <div class="comment-card-wrapper">
-    <p class="commenter">{{ props.comment.username }}</p>
+    <div class="name-reaction-wrap">
+      <p class="commentor">{{ props.comment.username }}</p>
+      <div class="reaction-wrapper">
+        <p v-for="reaction in reactions" class="reaction" @click="removeReaction(reaction._id)" style="cursor: pointer;" >{{ reaction.content }}</p>
+        <button class="add-button" @click="toggleEmojiPopup">
+          <SvgIcon class="add" type="mdi" :path="mdiPlusCircleOutline" />
+        </button>
+        <div v-if="showEmojiPopup" class="emoji-popup">
+          <p class="emoji" @click="addReaction('❤️')">❤️</p>
+          <p class="emoji" @click="addReaction('🤔')">🤔</p>
+          <p class="emoji" @click="addReaction('6️⃣')">6️⃣</p>
+          <p class="emoji" @click="addReaction('🖕')">🖕</p>
+        </div>
+      </div>
+    </div>
     <div class="comment-content-wrapper">
       <p class="">
         {{ props.comment.content }}
@@ -55,10 +113,62 @@
 
 
 <style scoped>
-.commenter{
+.emoji-popup {
+  left: 0;
+  background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0 0.2rem 0 0.2rem;
+}
+
+.emoji {
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+.add-button{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 100%;
+}
+
+.add-button:hover{
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.add{
+  margin: 0 0 -0.22rem 0;
+  padding: 0;
+  height: 1.2rem;
+}
+
+.reaction {
+  padding: 0;
+  margin: 0;
+}
+
+.reaction-wrapper{
+  margin-left: 1rem;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.name-reaction-wrap{
+  display: flex;
+  align-items: center;
+}
+
+.commentor{
   text-decoration: underline;
   font-size: small;
-  padding: 0.1em
+  padding: 0;
+  margin: 0 0 0.2rem 0.4rem;
 }
 
 .comment-card-wrapper{
