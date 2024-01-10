@@ -22,6 +22,7 @@ import Home from "./components/Home.vue"
 import AddPost from "./components/AddPost.vue"
 import Login from "./components/Login.vue"
 import SignUp from "./components/SignUp.vue"
+import Profile from "./components/Profile.vue"
 
 const routes = [
     {
@@ -49,6 +50,11 @@ const routes = [
         name: "Sign Up",
         component: SignUp
     },
+    {
+        path: "/profile/:username",
+        name: "profile",
+        component: Profile
+    }
 ];
 
 const router = createRouter({

@@ -53,7 +53,7 @@ import * as config from "../../config.js"
 
   onMounted(async () => {
     const token = localStorage.getItem('token')
-    const response = await fetch(`${config.BACKEND}/api/auth/user/details`, {
+    const response = await fetch(`${config.BACKEND}/api/auth/user/detailsbytoken`, {
       method: 'POST',
         mode: 'cors',
         headers: {

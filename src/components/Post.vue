@@ -26,7 +26,7 @@ import TextInput from "@/components/TextInput.vue";
 import {mdiArrowDownBold, mdiArrowDownBoldOutline, mdiArrowUpBold, mdiArrowUpBoldOutline} from "@mdi/js";
 import SvgIcon from "@jamescoyle/vue-icon";
 
-const route = useRoute()
+  const route = useRoute()
   const router = useRouter()
   const postId = route.params.postId
   const title = ref("")
