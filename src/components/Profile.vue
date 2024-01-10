@@ -18,7 +18,7 @@
 
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
-  import { ref, onMounted } from "vue"
+  import { ref, onMounted, watch } from "vue"
   import {useRoute, useRouter} from "vue-router";
   import * as config from "../../config.js";
   import TextInput from "@/components/TextInput.vue";
@@ -28,7 +28,7 @@
 
   const about = ref("abc")
   const username = ref(route.params.username ? route.params.username : "")
-  const userDescription = ref("User description")
+  const userDescription = ref("")
   const loggedIn = ref(false)
   const newDescription = ref("")
   const descriptionBoxShow = ref(false)
@@ -37,8 +37,13 @@
     const response = await fetch(`${config.BACKEND}/api/auth/user/detailsbyusername/${username.value}`)
     const data = await response.json()
     try{
-      userDescription.value = data.description.length > 0 ? data.description : "This user doesn't have a description set"
+      if (data.username){
+        userDescription.value = data.description.length > 0 ? data.description : "This user doesn't have a description set"
+      }else{
+        userDescription.value = "User doesn't exist"
+      }
     }catch{
+      // old users that don't have userDescription in database collection
       userDescription.value = "This user doesn't have a description set"
     }
     isLoggedIn()
@@ -87,6 +92,12 @@
     await getUserInfo()
     descriptionBoxShow.value = false
   }
+
+  watch(() => route.params.username, async (newUsername) => {
+    username.value = newUsername ? newUsername : "";
+    await getUserInfo();
+    newDescription.value = userDescription.value;
+  })
 
   onMounted(async () => {
     await getUserInfo()

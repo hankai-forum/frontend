@@ -39,12 +39,14 @@
   const isOP = ref(false)
   const showEmojiPopup = ref(false)
   const reactions = ref()
+  const emojis = ref(["6️⃣", "🆗", "🤷‍♀️", "🖕", "😠", "❤️"])
 
   const toggleEmojiPopup = () => {
     showEmojiPopup.value = !showEmojiPopup.value;
   }
 
   async function addReaction(emoji){
+    showEmojiPopup.value = false; // Hide the popup after selecting an emoji
     const response = await fetch(`${config.BACKEND}/api/reaction/add`, {
         method: 'POST',
         mode: 'cors',
@@ -57,7 +59,6 @@
           commentId: commentId
         }),
       });
-    showEmojiPopup.value = false; // Hide the popup after selecting an emoji
     await getReactions()
   }
 
@@ -68,14 +69,16 @@
   }
 
   async function removeReaction(reactionId){
-    const response = await fetch(`${config.BACKEND}/api/reaction/del/${reactionId}`, {
-      method: "DELETE",
-      mode: 'cors',
-      headers: {
-          'Content-Type': 'application/json',
-      }
-    })
-    await getReactions()
+    if (props.username){
+      const response = await fetch(`${config.BACKEND}/api/reaction/del/${reactionId}/${props.username}`, {
+        method: "DELETE",
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+      })
+      await getReactions()
+    }
   }
 
   onMounted(() => {
@@ -88,17 +91,16 @@
 <template>
   <div class="comment-card-wrapper">
     <div class="name-reaction-wrap">
-      <p class="commentor">{{ props.comment.username }}</p>
+      <router-link :to="`/profile/${props.comment.username}`" style="color: inherit" >
+        <p class="commentor">{{ props.comment.username }}</p>
+      </router-link>
       <div class="reaction-wrapper">
         <p v-for="reaction in reactions" class="reaction" @click="removeReaction(reaction._id)" style="cursor: pointer;" >{{ reaction.content }}</p>
-        <button class="add-button" @click="toggleEmojiPopup">
+        <button v-if="props.username" class="add-button" @click="toggleEmojiPopup">
           <SvgIcon class="add" type="mdi" :path="mdiPlusCircleOutline" />
         </button>
         <div v-if="showEmojiPopup" class="emoji-popup">
-          <p class="emoji" @click="addReaction('❤️')">❤️</p>
-          <p class="emoji" @click="addReaction('🤔')">🤔</p>
-          <p class="emoji" @click="addReaction('6️⃣')">6️⃣</p>
-          <p class="emoji" @click="addReaction('🖕')">🖕</p>
+          <p class="emoji" v-for="emoji in emojis" @click="addReaction(emoji)">{{ emoji }}</p>
         </div>
       </div>
     </div>

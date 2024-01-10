@@ -91,7 +91,13 @@
 
     <div class="right-column" style="justify-self: flex-end" >
       <div v-if="loggedIn" class="log-block">
-        <p style="margin-right: 2rem;">Logged in as <span style="text-decoration: underline">{{ username }}</span></p>
+          <p style="margin-right: 2rem;">
+            Logged in as
+            <router-link :to="`/profile/${username}`" style="color: inherit" >
+              <span style="text-decoration: underline">{{ username }}</span>
+            </router-link>
+          </p>
+
         <button @click="logoutClick">Logout</button>
       </div>
 
