@@ -22,6 +22,7 @@
   import {useRoute, useRouter} from "vue-router";
   import * as config from "../../config.js";
   import TextInput from "@/components/TextInput.vue";
+  import LoadingAnimation from "@/components/LoadingAnimation.vue";
 
   const router = useRouter()
   const route = useRoute()
@@ -32,8 +33,10 @@
   const loggedIn = ref(false)
   const newDescription = ref("")
   const descriptionBoxShow = ref(false)
+  const loading = ref(true)
 
   async function getUserInfo() {
+    loading.value = true
     const response = await fetch(`${config.BACKEND}/api/auth/user/detailsbyusername/${username.value}`)
     const data = await response.json()
     try{
@@ -47,6 +50,7 @@
       userDescription.value = "This user doesn't have a description set"
     }
     isLoggedIn()
+    loading.value = false
   }
 
   function isLoggedIn(){
@@ -114,6 +118,7 @@
       <TextInput v-if="descriptionBoxShow" placeholder="Introduce yourself" styles="font-size: 1rem; margin-left: 0" rows="10" v-model="newDescription" />
       <button v-if="descriptionBoxShow" @click="descriptionSubmit" style="font-size: x-small">Submit</button>
     </div>
+    <LoadingAnimation v-if="loading" />
   </div>
 </template>
 

@@ -18,13 +18,14 @@
 
 <!-- vim: set ts=2 sts=2 sw=2: -->
 <script setup>
-import * as config from "../../config.js"
-import {onMounted, ref} from "vue"
-import {useRoute, useRouter} from "vue-router";
-import CommentCard from "./CommentCard.vue";
-import TextInput from "@/components/TextInput.vue";
-import {mdiArrowDownBold, mdiArrowDownBoldOutline, mdiArrowUpBold, mdiArrowUpBoldOutline} from "@mdi/js";
-import SvgIcon from "@jamescoyle/vue-icon";
+  import * as config from "../../config.js"
+  import {onMounted, ref} from "vue"
+  import {useRoute, useRouter} from "vue-router";
+  import CommentCard from "./CommentCard.vue";
+  import TextInput from "@/components/TextInput.vue";
+  import {mdiArrowDownBold, mdiArrowDownBoldOutline, mdiArrowUpBold, mdiArrowUpBoldOutline} from "@mdi/js";
+  import SvgIcon from "@jamescoyle/vue-icon";
+  import LoadingAnimation from "@/components/LoadingAnimation.vue";
 
   const route = useRoute()
   const router = useRouter()
@@ -43,6 +44,8 @@ import SvgIcon from "@jamescoyle/vue-icon";
   const upVoted = ref(false)
   const downVoted = ref(false)
   const canUseSubmitButton = ref(false)
+  const loadingPost = ref(true)
+  const loadingComment = ref(false)
 
   async function getPost(){
     const response = await fetch(`${config.BACKEND}/api/posts/${postId}`)
@@ -207,7 +210,9 @@ import SvgIcon from "@jamescoyle/vue-icon";
   }
 
   onMounted(async () => {
+    loadingPost.value = true
     await getPost()
+    loadingPost.value = false
     isLoggedIn()
     getPostComments()
     getVotes()
@@ -218,10 +223,18 @@ import SvgIcon from "@jamescoyle/vue-icon";
 
 <template>
   <div class="left-column" style="display: flex; flex-direction: column; width: 100%; align-items: center;">
-    <p>Posted by <span style="text-decoration: underline">{{ OPUsername }}</span></p>
+      <p>
+        Posted by
+        <router-link :to="`/profile/${OPUsername}`" style="color: inherit" >
+          <span style="text-decoration: underline">
+            {{ OPUsername }}
+          </span>
+        </router-link>
+      </p>
     <button v-if="isOP" class="side-button" @click="deletePost">Delete Post</button>
   </div>
   <div class="middle-column ">
+    <LoadingAnimation v-if="loadingPost" />
     <div class="post-data">
       <h1>
         {{ title }}
