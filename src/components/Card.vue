@@ -230,6 +230,7 @@
   justify-self: center;
   margin-right: auto;
   margin-left: -2em;
+  padding-left: 2em;
   width: 100%;
 }
 

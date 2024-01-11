@@ -130,6 +130,7 @@
   border-bottom: 1px white solid;
   //margin-bottom: 0.6rem;
   padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+  z-index: 2;
 }
 
 ul.links {
