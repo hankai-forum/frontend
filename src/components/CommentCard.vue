@@ -65,9 +65,9 @@
   async function getReactions(){
     const response = await fetch(`${config.BACKEND}/api/reaction/${commentId}`)
     reactions.value = await response.json()
-    console.log("Reactions: ", reactions.value)
+    reactions.value = reactions.value.map(obj => ({...obj, displayReactionUsername: false}))
+    console.log("Reactions: ", JSON.parse(JSON.stringify(reactions.value)))
   }
-
   async function removeReaction(reactionId){
     if (props.username){
       const response = await fetch(`${config.BACKEND}/api/reaction/del/${reactionId}/${props.username}`, {
@@ -95,9 +95,12 @@
         <p class="commentor">{{ props.comment.username }}</p>
       </router-link>
       <div class="reaction-wrapper">
-        <p v-for="reaction in reactions" class="reaction" @click="removeReaction(reaction._id)" style="cursor: pointer;" >{{ reaction.content }}</p>
+        <div v-for="reaction in reactions" style="padding: 0; margin: 0;">
+          <p v-if="reaction.displayReactionUsername" class="reaction-username" >{{ reaction.username }}</p>
+          <p class="reaction" @click="removeReaction(reaction._id)" style="cursor: pointer;" v-on:mouseover="reaction.displayReactionUsername = !reaction.displayReactionUsername" >{{ reaction.content }}</p>
+        </div>
         <button v-if="props.username" class="add-button" @click="toggleEmojiPopup">
-          <SvgIcon class="add" type="mdi" :path="mdiPlusCircleOutline" />
+        <SvgIcon class="add" type="mdi" :path="mdiPlusCircleOutline" />
         </button>
         <div v-if="showEmojiPopup" class="emoji-popup">
           <p class="emoji" v-for="emoji in emojis" @click="addReaction(emoji)">{{ emoji }}</p>
@@ -115,6 +118,11 @@
 
 
 <style scoped>
+.reaction-username{
+  padding: 0;
+  margin: 0;
+}
+
 .emoji-popup {
   left: 0;
   background-color: white;

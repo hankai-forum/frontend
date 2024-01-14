@@ -80,7 +80,7 @@
       <p v-else style="font-size: x-large">Posts</p>
     </div>
     <Card v-for="item in cards" :question="item.q" :description="item.d" :postId="item.postId" :loggedIn="loggedIn" :username="username" />
-    <LoadingAnimation />
+    <LoadingAnimation v-if="loading" />
   </div>
 </template>
 
